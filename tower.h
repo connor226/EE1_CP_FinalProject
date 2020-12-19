@@ -46,9 +46,9 @@ class tower{
                 false;
             }
         }
-        bool inrange(enemy* monster,int posx, int posy)
+        bool inrange(enemy* monster)
         {
-            if (pow((posx - x), 2) + pow((posy - y), 2) > pow(range, 2))
+            if (pow((monster->x - x), 2) + pow((monster->y - y), 2) > pow(range, 2))
             {
                 lock = true;
                 locked_enemy = monster;
