@@ -1,5 +1,5 @@
 #include"tower.h"
-change?
+
 tower*** towers=new tower**[18]; 
 
 for(int i=0;i<18;i++)
