@@ -2,14 +2,29 @@
 
 tower*** towers=new tower**[18]; 
 SDL_Texture* tower_pic[3];
-SDL_Rect towerClips[32];
-for (int i = 0; i < 32; i++)
+SDL_Rect towerClips[6][32];
+SDL_Rect towerClips2[3][8];
+for(int j=0;j<6;j++)
 {
-    towerClips[i].x = 70 * (i + 1);
-    towerClips[i].y = 0;
-    towerClips[i].w = 70;
-    towerClips[i].h = 70;
-}			
+    for (int i = 0; i < 32; i++)
+    {
+        towerClips[j][i].x = 70 * (i + 1);
+        towerClips[j][i].y = 0;
+        towerClips[j][i].w= 70;
+        towerClips[j][i].h = 70;
+    }
+}
+for(int j=0;j<3;j++)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        towerClips2[j][i].x = 70 * (i + 1);
+        towerClips2[j][i].y = 0;
+        towerClips2[j][i].w = 70;
+        towerClips2[j][i].h = 70;
+    }
+}
+	
 for(int i=0;i<18;i++)
 {
     towers[i] = new tower*[10];
@@ -85,7 +100,14 @@ main()
 			}
 		    }
 		    //render tower
-		    SDL_RenderCopy(gRender, tower_pic[towers[i][j]->kind], &towerClips[towers[i][j]->theta], &towers[i][j]->quad) 
+		    if(towers[i][j]->kind<6)
+		    {
+		        SDL_RenderCopy(gRender, tower_pic[towers[i][j]->kind], &towerClips[towers[i][j]->theta], &towers[i][j]->quad)
+		    }
+		    else
+		    {
+		        SDL_RenderCopy(gRender, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->theta], &towers[i][j]->quad)
+		    }
 		    
 		}
 	    }
