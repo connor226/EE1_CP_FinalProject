@@ -8,8 +8,12 @@
 #endif
 class tower{
     public:
+	friend class enemy;
         tower(int x, int y, int kind) :x(x), y(y), width(80), height(80), theta(0), lock(false), locked_enemy(NULL);
         {
+	    type = kind;
+	    quad.x = x;
+	    quad.y = y;
             t = SDL_GetTicks();
             switch (kind){
             case 1:
@@ -63,20 +67,23 @@ class tower{
         {
             if(lock)
             {
-                theta = atan2(monster->x-x,y-moster->y);
+                calculated_theta = (atan2(y-monster->y,x->monster-x))*180/3.14159;
+		theta = int(calculated_theta/11.25);
             }
         }
+	int theta;
+	int type;
+	SDL_Rect quad={0,0,80,80};
     private:
         int x,y;
         int atk;
         int range;
         int t;
-        int theta;
+	double calculated_theta;
         int omega;
         int cooltime;
         int width;
         int height;
         bool lock;
         enemy* locked_enemy;
-        SDL_Texture* pic;
 };
