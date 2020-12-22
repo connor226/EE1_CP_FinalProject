@@ -1,5 +1,5 @@
 #include"SDL.h"
-//#include"enemy.h"
+#include"enemy.h"
 //#include"final/const.h"
 #include<cmath>
 #define PI 3.14159265
@@ -9,7 +9,7 @@
 class tower{
     public:
 	friend class enemy;
-        tower(int num_x, int num_y, int kind) :x(num_x*80), y(num_y*80), width(80), height(80), theta(0), lock(false), locked_enemy(NULL)
+        tower(int num_x, int num_y, int kind) :x(80+num_x*90), y(70+num_y*90), theta(0), lock(false), locked_enemy(NULL)
         {
 	    type = kind;
 	    quad.x = x;
@@ -106,7 +106,7 @@ class tower{
         }
 	int theta;
 	int type;
-	SDL_Rect quad={0,0,80,80};
+	SDL_Rect quad={0,0,90,90};
     private:
         int x,y;
         int atk;
@@ -115,8 +115,8 @@ class tower{
 	double calculated_theta;
         int omega;
         int cooltime;
-        int width;
-        int height;
+        //int width;
+        //int height;
         bool lock;
         //enemy* locked_enemy;
 };
