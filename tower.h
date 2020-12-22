@@ -16,22 +16,46 @@ class tower{
 	    quad.y = y;
             t = SDL_GetTicks();
             switch (kind){
+            case 0:
+                atk = 5;
+                cooltime = 1;
+                range = 10;
+                break;
             case 1:
-                pic = tower1;
                 atk = 5;
                 cooltime = 1;
                 range = 10;
                 break;
-            case 2:
-                pic = tower2;
+        `   case 2:
                 atk = 5;
                 cooltime = 1;
                 range = 10;
                 break;
-        `   case 3:
-                pic = tower3;
+            case 3:
                 atk = 5;
                 cooltime = 1;
+                range = 10;
+                break;
+            case 4:
+                atk = 5;
+                cooltime = 1;
+                range = 10;
+                break;
+        `   case 5:
+                atk = 5;
+                cooltime = 1;
+                range = 10;
+                break;
+            case 6:
+                atk = 5;
+                range = 10;
+                break;
+            case 7:
+                atk = 5;
+                range = 10;
+                break;
+        `   case 8:
+                atk = 5;
                 range = 10;
                 break;
             default:
