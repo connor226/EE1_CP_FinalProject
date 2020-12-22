@@ -1,5 +1,5 @@
 #include"tower.h"
-
+//init
 tower*** towers=new tower**[18]; 
 SDL_Texture* tower_pic[3];
 SDL_Rect towerClips[6][32];
@@ -36,11 +36,18 @@ for(int i=0;i<18;i++)
 	towers[i][j]=NULL;
     }
 }
+
 void loadmedia()
 {
     SDL_Surface* loadedSurface = IMG_Load("C:/vclib/10_color_keying/Light_Gun.png");
     tower_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     SDL_FreeSurface(loadedSurface);
+}
+
+tower* upgrade(x,y,tower* old)
+{
+    tower* x = new tower(x,y,old->kind+1);
+    return x;
 }
 main()
 {
