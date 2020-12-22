@@ -1,6 +1,6 @@
 #include"SDL.h"
-#include"enemy"
-#include"final/const.h"
+//#include"enemy"
+//#include"final/const.h"
 #include<cmath>
 #define PI 3.14159265
 #ifndef TOWER_H
@@ -9,7 +9,7 @@
 class tower{
     public:
 	friend class enemy;
-        tower(int num_x, int num_y, int kind) :x(num_x*80), y(num_y*80), width(80), height(80), theta(0), lock(false), locked_enemy(NULL);
+        tower(int num_x, int num_y, int kind) :x(num_x*80), y(num_y*80), width(80), height(80), theta(0), lock(false), locked_enemy(NULL)
         {
 	    type = kind;
 	    quad.x = x;
@@ -118,5 +118,5 @@ class tower{
         int width;
         int height;
         bool lock;
-        enemy* locked_enemy;
+        //enemy* locked_enemy;
 };
