@@ -20,10 +20,10 @@ const int DOWN = 3;
 #define X first
 #define Y second
 
-pii DIR[4] = {make_pair(0, 1), make_pair(0, -1), make_pair(-1, 0), make_pair(1, 0)};
+pii DIR[4] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
 
 pii operator +(const pii &p1, const pii &p2){
-	return make_pair(p1.X + p2.X, p1.Y + p2.Y);
+	return {p1.X + p2.X, p1.Y + p2.Y};
 }
 
 bool check(pii p){
@@ -39,25 +39,34 @@ class val{
 class ENEMY{
 	public:
 		bool CanFly;
-		int hp, speed, dir;
+		int hp, speed, dir, money;
 		pii pos;
 //		SDL_Texture *pic;
 //		SDL_Rect rect;
 		ENEMY(int type){
 			switch(type){
 				case 1:{
-					hp = 100;
-					speed = 2;
+					hp = 75;
+					speed = 3;
+					money = 2;
 					break;
 				}
 				case 2: {
-					hp = 75;
-					speed = 3;
+					hp = 100;
+					speed = 2;
+					money = 1;
 					break;
 				}
 				case 3: {
 					hp = 150;
 					speed = 1;
+					money = 5;
+					break;
+				}
+				case 4: {
+					hp = 200;
+					speed = 1;
+					money = 10;
 					break;
 				}
 			}
@@ -85,7 +94,9 @@ class ENEMY{
 						q.push(tmp);
 					}
 				}
+				
 			}
+			
 		}
 };
 
