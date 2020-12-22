@@ -10,7 +10,7 @@ using namespace std;
 //constants
 const int SCREEN_WIDTH = 1800;
 const int SCREEN_HEIGHT = 1000;
-const int TOWER_WIDTH = 80;
+const int TOWER_WIDTH = 90;
 
 //Starts up SDL and creates window
 bool init();
@@ -30,16 +30,17 @@ SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
 
-SDL_Texture* red;
-SDL_Texture* blue;
-SDL_Texture* green;
-const SDL_Rect initialred = { 1720,910,80,80 };
-const SDL_Rect initialblue = { 1720,820,80,80 };
-const SDL_Rect initialgreen = { 1720,730,80,80 };
+SDL_Texture* background;
+SDL_Texture* light;
+SDL_Texture* slow;
+SDL_Texture* rocket;
+const SDL_Rect initiallight = { 80,70,90,90 };
+const SDL_Rect initialslow = { 1720,820,90,90 };
+const SDL_Rect initialrocket = { 1720,730,90,90 };
 
-SDL_Rect redrect= { 1720,910,80,80 };
-SDL_Rect bluerect = { 1720,820,80,80 };
-SDL_Rect greenrect = { 1720,730,80,80 };
+SDL_Rect lightrect= { 1720,910,80,80 };
+SDL_Rect slowrect = { 1720,820,80,80 };
+SDL_Rect rocketrect = { 1720,730,80,80 };
 
 SDL_Point mouse_position;
 
@@ -112,36 +113,44 @@ bool loadMedia()
 {
 	//Loading success flag
 	bool success = true;
-
-	red = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/red.png");
-	if (red == NULL)
+	background = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Basic_Level_Classic.jpg");
+	if (background == NULL)
 	{
-		printf("Failed to load red texture image!\n");
+		printf("Failed to load background texture image!\n");
 		success = false;
 	}
-	blue = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/blue.png");
-	if (blue == NULL)
+	light = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Gun.png");
+	if (light == NULL)
 	{
-		printf("Failed to load blue image!\n");
+		printf("Failed to load light image!\n");
 		success = false;
 	}
-	green = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/green.png");
-	if (green == NULL)
+	slow = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Slow_Tower.png");
+	if (slow == NULL)
 	{
-		printf("Failed to load green image!\n");
+		printf("Failed to load slow image!\n");
 		success = false;
 	}
-
+	rocket = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Rocket_Launcher.png");
+	if (rocket == NULL)
+	{
+		printf("Failed to load rocket image!\n");
+		success = false;
+	}
 	return success;
 }
-
 
 void close()
 {
 	//Free loaded images
-	SDL_DestroyTexture(red);
-	red = NULL;
-
+	SDL_DestroyTexture(light);
+	light = NULL;
+	SDL_DestroyTexture(slow);
+	slow = NULL;
+	SDL_DestroyTexture(rocket);
+	rocket = NULL;
+	SDL_DestroyTexture(background);
+	background = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
@@ -167,6 +176,7 @@ SDL_Texture* loadTexture(std::string path)
 	}
 	else
 	{
+		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
 		//Create texture from surface pixels
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL)
@@ -183,6 +193,7 @@ SDL_Texture* loadTexture(std::string path)
 
 int main(int argc, char* args[])
 {
+
 	//Start up SDL and create window
 	if ( !init() )
 	{
@@ -198,23 +209,24 @@ int main(int argc, char* args[])
 		else
 		{
 			bool quit = false;
-			bool redflag = false;
-			bool blueflag = false;
-			bool greenflag = false;
+			bool lightflag = false;
+			bool slowflag = false;
+			bool rocketflag = false;
 			SDL_Event e;
 			while (!quit)
 			{
-				SDL_SetTextureBlendMode(red, SDL_BLENDMODE_BLEND);
-				SDL_SetTextureAlphaMod(red, 255);
-				SDL_SetTextureBlendMode(blue, SDL_BLENDMODE_BLEND);
-				SDL_SetTextureAlphaMod(blue, 255);
-				SDL_SetTextureBlendMode(green, SDL_BLENDMODE_BLEND);
-				SDL_SetTextureAlphaMod(green, 255);
+				SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
+				SDL_SetTextureAlphaMod(light, 255);
+				SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
+				SDL_SetTextureAlphaMod(slow, 255);
+				SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
+				SDL_SetTextureAlphaMod(rocket, 255);
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
-				SDL_RenderCopy(gRenderer, red, NULL, &initialred);
-				SDL_RenderCopy(gRenderer, blue, NULL, &initialblue);
-				SDL_RenderCopy(gRenderer, green, NULL, &initialgreen);
+				SDL_RenderCopy(gRenderer, background, NULL, NULL);
+				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
+				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
+				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
 				while (SDL_PollEvent(&e) != 0)
 				{
 					if (e.type == SDL_QUIT)
@@ -225,96 +237,83 @@ int main(int argc, char* args[])
 					if ( e.type == SDL_MOUSEBUTTONDOWN )
 					{
 						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
-						if (redflag == true)
+						if (lightflag == true)
 						{
 							/*
-							redrect.x = mouse_position.x;
-							redrect.y = mouse_position.y;
-							SDL_RenderCopy(gRenderer, red, NULL, &redrect);*/
-							// build
-							// erase the above code in the loop
-							redflag = false;
+							int p,q
+							p=(mouse_position.x-80)/90;
+							q=(mouse_position.y-70)/90;
+							build the tower on the point (p,q);
+							 */
+							lightflag = false;
 							continue;
-						}
-						else if (blueflag == true)
-						{
+						}else if (slowflag == true){
 							/*
-							bluerect.x = mouse_position.x;
-							bluerect.y = mouse_position.y;
-							SDL_RenderCopy(gRenderer, blue, NULL, &bluerect);*/
-							// build
-							// erase the above code in the loop
-							blueflag = false;
+							 build
+							*/
+							slowflag = false;
 							continue;
-						}
-						else if (greenflag == true)
-						{
-							greenrect.x = mouse_position.x;
-							greenrect.y = mouse_position.y;
-							SDL_RenderCopy(gRenderer, green, NULL, &greenrect);
-							// build
-							// erase the above code in the loop
-							greenflag = false;
+						}else if (rocketflag == true){
+							/*
+							 build
+							*/
+							rocketflag = false;
 							continue;
 						}
 
-						if (point_in_rect(mouse_position, initialred) == true)
+						if (point_in_rect(mouse_position, initiallight) == true)
 						{
-							if (redflag == false)
+							if (lightflag == false)
 							{
-								redflag = true;
+								lightflag = true;
 							}							
-						}
-						else if (point_in_rect(mouse_position, initialblue) == true)
-						{
-							if (blueflag == false)
+						}else if (point_in_rect(mouse_position, initialslow) == true){
+							if (slowflag == false)
 							{
-								blueflag = true;
+								slowflag = true;
 							}
-						}
-						else if (point_in_rect(mouse_position, initialgreen) == true)
-						{
-							if (greenflag == false)
+						}else if (point_in_rect(mouse_position, initialrocket) == true){
+							if (rocketflag == false)
 							{
-								greenflag = true;
+								rocketflag = true;
 							}
 						}
 					}
 
-					if (redflag == true)
+					if (lightflag == true)
 					{
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							redrect.x = mouse_position.x;
-							redrect.y = mouse_position.y;
-							SDL_SetTextureBlendMode(red, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(red, 128);
-							SDL_RenderCopy(gRenderer, red, NULL, &redrect);
+							lightrect.x = mouse_position.x;
+							lightrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
+							SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
 						}
 					}
-					if (blueflag == true)
+					if (slowflag == true)
 					{
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							bluerect.x = mouse_position.x;
-							bluerect.y = mouse_position.y;
-							SDL_SetTextureBlendMode(blue, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(blue, 128);
-							SDL_RenderCopy(gRenderer, blue, NULL, &bluerect);
+							slowrect.x = mouse_position.x;
+							slowrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(slow, 192);
+							SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
 						}
 					}
-					if (greenflag == true)
+					if (rocketflag == true)
 					{
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							greenrect.x = mouse_position.x;
-							greenrect.y = mouse_position.y;
-							SDL_SetTextureBlendMode(green, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(green, 128);
-							SDL_RenderCopy(gRenderer, green, NULL, &greenrect);
+							rocketrect.x = mouse_position.x;
+							rocketrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(rocket, 192);
+							SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
 						}
 					}
 				}
