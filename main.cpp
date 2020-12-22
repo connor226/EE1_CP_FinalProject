@@ -6,7 +6,7 @@
 tower*** towers=new tower**[18];
 vector<enemy*> enemies;
 vector<bullet*> bullets;
-SDL_Texture* bullet_pic[2];
+SDL_Texture* bullet_pic[3];
 SDL_Texture* tower_pic[9];
 SDL_Rect towerClips[6][32];
 SDL_Rect towerClips2[3][8];
@@ -242,7 +242,7 @@ int main( int argc, char* args[] )
                 for(int i=0;i<bullets.size();i++)
                 {
                     bullets[i]->move();
-                    SDL_RenderCopy(gRender, bullet_pic, NULL, &bullets[i]->quad)
+                    SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
                 }
                 }
                 //end

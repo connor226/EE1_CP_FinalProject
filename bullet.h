@@ -7,10 +7,11 @@ class bullet
 	friend class tower;
 	bullet(tower* tower1, enemy* enemy1):
 	{
+	    kind = tower1->kind;
 	    speed = 50;
 	    atk = tower->atk;
-	    x = tower1->x+40;
-	    y = tower1->y+40;
+	    x = tower1->x;
+	    y = tower1->y;
 	    quad.x = x;
 	    quad.y = y;
 	    v_x = (enemy1->x-tower1->x)/speed;
@@ -36,8 +37,8 @@ class bullet
 
 		
 	}
-	SDL_Rect quad = {0,0,10,10;}
-	int x,y,speed,atk;
+	SDL_Rect quad = {0,0,80,80};
+	int x,y,speed,atk,kind;
     private:
 	double x_e,y_e,v_x,v_y;
 }
