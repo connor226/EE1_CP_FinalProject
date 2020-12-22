@@ -96,8 +96,24 @@ void init()
 }
 void loadmedia()
 {
-    SDL_Surface* loadedSurface = IMG_Load("C:/vclib/10_color_keying/Light_Gun.png");
+    SDL_Surface* loadedSurface = IMG_Load("picture/Light_Gun.png");
     tower_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Medium_Gun.png");
+    tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Heavy_Gun.png");
+    tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Light_Rocket_Launcher.pngpng");
+    tower_pic[3] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Medium_Rocket_Launcher.png.png");
+    tower_pic[4] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Heavy_Rocket_Launcher.png.png");
+    tower_pic[5] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Basic_Slow_Tower.png");
+    tower_pic[6] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Upgraded_Slow_Tower.png");
+    tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Surface* loadedSurface = IMG_Load("picture/Adavanced_Slow_Tower3.png");
+    tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     SDL_FreeSurface(loadedSurface);
 }
 tower* upgrade(x,y,tower* old)
