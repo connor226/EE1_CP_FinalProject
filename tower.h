@@ -9,7 +9,7 @@
 class tower{
     public:
 	friend class enemy;
-        tower(int x, int y, int kind) :x(x), y(y), width(80), height(80), theta(0), lock(false), locked_enemy(NULL);
+        tower(int num_x, int num_y, int kind) :x(num_x*80), y(num_y*80), width(80), height(80), theta(0), lock(false), locked_enemy(NULL);
         {
 	    type = kind;
 	    quad.x = x;
@@ -65,10 +65,19 @@ class tower{
         }
         void rotate()
         {
-            if(lock)
-            {
-                calculated_theta = (atan2(y-monster->y,x->monster-x))*180/3.14159;
-		theta = int(calculated_theta/11.25);
+	    if(kind<6)
+	    {
+   		if(lock)
+                {
+                    calculated_theta = (atan2(y-monster->y,x->monster-x))*180/3.14159;
+                    theta = int(calculated_theta/11.25);
+		}
+               
+	    }
+            else
+	    {
+	        theta+= 1;
+		if(theta>7)theta-=8;
             }
         }
 	int theta;
