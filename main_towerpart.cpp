@@ -1,7 +1,13 @@
 #include"tower.h"
+#include<vector>
+#include"enemy.h"
+#include"bullet.h"
 //init
-tower*** towers=new tower**[18]; 
-SDL_Texture* tower_pic[3];
+tower*** towers=new tower**[18];
+vector<enemy*> enemies;
+vector<bullet*> bullets;
+SDL_Texture* bullet_pic[2];
+SDL_Texture* tower_pic[9];
 SDL_Rect towerClips[6][32];
 SDL_Rect towerClips2[3][8];
 for(int j=0;j<6;j++)
@@ -82,7 +88,10 @@ main()
 								if(towers[i][j]->ableatk(SDL_GetTicks()))
 								{
 									//make a bullet
+								    bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
+		                                                    bullets.push_back(x);
 								}
+
 								break;
 							}
 						}
@@ -90,12 +99,14 @@ main()
 				}
 				else
 				{
-					if(towers[i][j]->inrange(towers->lock_enemy))
+					if(towers[i][j]->inrange(towers[i][j]->lock_enemy))
 					{
 						towers[i][j]->rotate();
 						if(towers[i][j]->ableatk(SDL_GetTicks()))
 						{
 							//make a bullet
+						    bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
+						    bullets.push_back(x);
 						}
 					}
 					else
@@ -108,8 +119,10 @@ main()
 								towers[i][j]->rotate();
 								if(towers[i][j]->ableatk(SDL_GetTicks()))
 								{
-									//make a bullet
-								}
+								   //make a bullet
+								    bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
+                                                                    bullets.push_back(x);
+   								}
 								break;
 							}
 						}
@@ -132,6 +145,11 @@ main()
 			}
 	    }
 	}
+    // render bullets
+    for(int i=0;i<bullets.size();i++)
+    {
+        SDL_RenderCopy(gRender, bullet_pic, NULL, &bullets[i]->quad)
+    }
     }
     //end
 }
