@@ -211,7 +211,7 @@ int main(int argc, char* args[])
 				SDL_SetTextureBlendMode(green, SDL_BLENDMODE_BLEND);
 				SDL_SetTextureAlphaMod(green, 255);
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				//SDL_RenderClear(gRenderer);
+				SDL_RenderClear(gRenderer);
 				SDL_RenderCopy(gRenderer, red, NULL, &initialred);
 				SDL_RenderCopy(gRenderer, blue, NULL, &initialblue);
 				SDL_RenderCopy(gRenderer, green, NULL, &initialgreen);
@@ -227,9 +227,10 @@ int main(int argc, char* args[])
 						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
 						if (redflag == true)
 						{
+							/*
 							redrect.x = mouse_position.x;
 							redrect.y = mouse_position.y;
-							SDL_RenderCopy(gRenderer, red, NULL, NULL);
+							SDL_RenderCopy(gRenderer, red, NULL, &redrect);*/
 							// build
 							// erase the above code in the loop
 							redflag = false;
@@ -237,9 +238,10 @@ int main(int argc, char* args[])
 						}
 						else if (blueflag == true)
 						{
+							/*
 							bluerect.x = mouse_position.x;
 							bluerect.y = mouse_position.y;
-							SDL_RenderCopy(gRenderer, blue, NULL, &bluerect);
+							SDL_RenderCopy(gRenderer, blue, NULL, &bluerect);*/
 							// build
 							// erase the above code in the loop
 							blueflag = false;
