@@ -26,7 +26,7 @@ class tower{
                 cooltime = 1;
                 range = 10;
                 break;
-        `   case 2:
+            case 2:
                 atk = 5;
                 cooltime = 1;
                 range = 10;
@@ -41,7 +41,7 @@ class tower{
                 cooltime = 1;
                 range = 10;
                 break;
-        `   case 5:
+            case 5:
                 atk = 5;
                 cooltime = 1;
                 range = 10;
@@ -54,7 +54,7 @@ class tower{
                 atk = 5;
                 range = 10;
                 break;
-        `   case 8:
+            case 8:
                 atk = 5;
                 range = 10;
                 break;
