@@ -142,11 +142,11 @@ void loadmedia()
     bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
     background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Gun.png");
+    loadedSurface = IMG_Load("pictures/Light_Gun_user.png");
     light = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Slow_Tower.png");
+    loadedSurface = IMG_Load("pictures/Slow_Tower_user.png");
     slow = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher.png");
+    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher_user.png");
     rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     SDL_FreeSurface(loadedSurface);
 }
@@ -305,8 +305,8 @@ int main( int argc, char* args[] )
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							lightrect.x = mouse_position.x;
-							lightrect.y = mouse_position.y;
+							lightrect.x = mouse_position.x-45;
+							lightrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
 							SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
@@ -317,8 +317,8 @@ int main( int argc, char* args[] )
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							slowrect.x = mouse_position.x;
-							slowrect.y = mouse_position.y;
+							slowrect.x = mouse_position.x-45;
+							slowrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(slow, 192);
 							SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
@@ -329,8 +329,8 @@ int main( int argc, char* args[] )
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							rocketrect.x = mouse_position.x;
-							rocketrect.y = mouse_position.y;
+							rocketrect.x = mouse_position.x-45;
+							rocketrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(rocket, 192);
 							SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
