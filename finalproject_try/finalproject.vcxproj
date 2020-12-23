@@ -149,6 +149,9 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="tower.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="pictures\Basic_Slow_Tower.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

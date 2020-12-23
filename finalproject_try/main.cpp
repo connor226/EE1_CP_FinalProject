@@ -22,7 +22,7 @@ SDL_Texture* background;
 SDL_Texture* light;
 SDL_Texture* slow;
 SDL_Texture* rocket;
-const SDL_Rect initiallight = { 80,70,90,90 };
+const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
 SDL_Rect lightrect= { 1720,910,80,80 };
@@ -248,6 +248,9 @@ int main( int argc, char* args[] )
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 				SDL_RenderCopy(gRenderer, background, NULL, NULL);
+				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
+				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
+				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
 				
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )  {
@@ -301,6 +304,18 @@ int main( int argc, char* args[] )
 							{
 								rocketflag = true;
 							}
+						}
+						if (e.button.button = SDL_BUTTON_RIGHT)
+						{
+							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+							p = (mouse_position.x - 80) / 90;
+							q = (mouse_position.y - 70) / 90;
+							towers[0][0] = new tower(0, 0, 0);
+							/*if (towers[p][q] != NULL)
+							{
+								delete towers[p][q];
+								towers[p][q] = NULL;
+							}*/
 						}
 					}
 				}
@@ -362,7 +377,7 @@ int main( int argc, char* args[] )
 									}
 								}
 								towers[i][j]->rotate();
-								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->kind][towers[i][j]->theta], &towers[i][j]->quad);
+								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->kind-6][towers[i][j]->theta], &towers[i][j]->quad);
 							}
 						}
                     }
