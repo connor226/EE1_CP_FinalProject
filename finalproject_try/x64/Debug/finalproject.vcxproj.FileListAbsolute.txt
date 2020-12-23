@@ -1,0 +1,2 @@
+C:\fianls\finalproject\x64\Debug\finalproject.exe
+C:\fianls\finalproject\x64\Debug\finalproject.pdb

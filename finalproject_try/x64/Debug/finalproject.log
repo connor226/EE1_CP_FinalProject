@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\fianls\finalproject\main.cpp(371,17): warning C4267: '正在初始化': 將 'size_t' 轉換為 'int'，資料可能遺失
+C:\fianls\finalproject\tower.h(74): warning C4715: 'tower::ableatk': 不是所有控制路徑都傳回值
+  finalproject.vcxproj -> C:\fianls\finalproject\x64\Debug\finalproject.exe
