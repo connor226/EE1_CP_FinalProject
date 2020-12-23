@@ -3,7 +3,6 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -34,7 +33,7 @@ SDL_Texture* background;
 SDL_Texture* light;
 SDL_Texture* slow;
 SDL_Texture* rocket;
-const SDL_Rect initiallight = { 80,70,90,90 };
+const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
 
@@ -119,19 +118,19 @@ bool loadMedia()
 		printf("Failed to load background texture image!\n");
 		success = false;
 	}
-	light = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Gun.png");
+	light = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Gun_user.png");
 	if (light == NULL)
 	{
 		printf("Failed to load light image!\n");
 		success = false;
 	}
-	slow = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Slow_Tower.png");
+	slow = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Slow_Tower_user.png");
 	if (slow == NULL)
 	{
 		printf("Failed to load slow image!\n");
 		success = false;
 	}
-	rocket = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Rocket_Launcher.png");
+	rocket = loadTexture("C:/Users/ASUS/Desktop/Robodefense/Robo_defense/Light_Rocket_Launcher_user.png");
 	if (rocket == NULL)
 	{
 		printf("Failed to load rocket image!\n");
@@ -285,8 +284,8 @@ int main(int argc, char* args[])
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							lightrect.x = mouse_position.x;
-							lightrect.y = mouse_position.y;
+							lightrect.x = mouse_position.x-45;
+							lightrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
 							SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
@@ -297,8 +296,8 @@ int main(int argc, char* args[])
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							slowrect.x = mouse_position.x;
-							slowrect.y = mouse_position.y;
+							slowrect.x = mouse_position.x-45;
+							slowrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(slow, 192);
 							SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
@@ -309,8 +308,8 @@ int main(int argc, char* args[])
 						if (e.type == SDL_MOUSEMOTION)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							rocketrect.x = mouse_position.x;
-							rocketrect.y = mouse_position.y;
+							rocketrect.x = mouse_position.x-45;
+							rocketrect.y = mouse_position.y-45;
 							SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
 							SDL_SetTextureAlphaMod(rocket, 192);
 							SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
