@@ -4,7 +4,7 @@
 #include <string>
 #include"tower.h"
 #include<vector>
-#include"enemy.h"
+#include"ENEMY.h"
 #include"bullet.h"
 
 using namespace std;
@@ -87,7 +87,7 @@ vector<bullet*> bullets;
 //bullet
 
 //enemy's things
-vector<enemy*> enemies;
+vector<ENEMY*> enemies;
 //enemy
 
 //init
@@ -164,6 +164,12 @@ void loadmedia()
     tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Adavanced_Slow_Tower3.png");
     tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    loadedSurface = IMG_Load("pictures/Light_Gun.png");
+    bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    loadedSurface = IMG_Load("pictures/Medium_Gun.png");
+    tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
+    tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
     background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Light_Gun.png");
@@ -247,10 +253,92 @@ int main( int argc, char* args[] )
 					if( e.type == SDL_QUIT ){
 						quit = true;
 					}
+                    if ( e.type == SDL_MOUSEBUTTONDOWN )
+					{
+						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
+						if (lightflag == true)
+						{
+							/*
+							int p,q
+							p=(mouse_position.x-80)/90;
+							q=(mouse_position.y-70)/90;
+							build the tower on the point (p,q);
+							 */
+							lightflag = false;
+							continue;
+						}else if (slowflag == true){
+							/*
+							 build
+							*/
+							slowflag = false;
+							continue;
+						}else if (rocketflag == true){
+							/*
+							 build
+							*/
+							rocketflag = false;
+							continue;
+						}
+
+						if (point_in_rect(mouse_position, initiallight) == true)
+						{
+							if (lightflag == false)
+							{
+								lightflag = true;
+							}							
+						}else if (point_in_rect(mouse_position, initialslow) == true){
+							if (slowflag == false)
+							{
+								slowflag = true;
+							}
+						}else if (point_in_rect(mouse_position, initialrocket) == true){
+							if (rocketflag == false)
+							{
+								rocketflag = true;
+							}
+						}
+					}
+
+					if (lightflag == true)
+					{
+						if (e.type == SDL_MOUSEMOTION)
+						{
+							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+							lightrect.x = mouse_position.x;
+							lightrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
+							SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
+						}
+					}
+					if (slowflag == true)
+					{
+						if (e.type == SDL_MOUSEMOTION)
+						{
+							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+							slowrect.x = mouse_position.x;
+							slowrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(slow, 192);
+							SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
+						}
+					}
+					if (rocketflag == true)
+					{
+						if (e.type == SDL_MOUSEMOTION)
+						{
+							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+							rocketrect.x = mouse_position.x;
+							rocketrect.y = mouse_position.y;
+							SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
+							SDL_SetTextureAlphaMod(rocket, 192);
+							SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
+						}
+					}
 				}
                 //unfreeze
                 for(int i=0;i<enemies.size();i++){
-                    enemies[i].freeze = false;
+                    enemies[i]->freeze = false;
                 }
                 //tower motion
                 for(int i=0;i<18;i++){
@@ -326,14 +414,19 @@ int main( int argc, char* args[] )
                 for(int i=0;i<bullets.size();i++){
                     SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
                 }
+                //enemies motion
+                //render buttom
+                SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
+				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
+				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
             }
         }
     }
 }
 
 //making tower
-towers[i][j] = new tower(x,y,kind);
+//towers[i][j] = new tower(x,y,kind);
 //destroy tower
-delete towers[i][j];
-towers[i][j]=NULL;
+//delete towers[i][j];
+//towers[i][j]=NULL;
 	

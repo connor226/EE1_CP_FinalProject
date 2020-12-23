@@ -6,7 +6,7 @@ class bullet
     public:
 	friend class tower;
 	bullet(tower* tower1, enemy* enemy1){
-	    kind = tower1->kind;
+	    kind = tower1->kind%3;
 	    speed = 50;
 	    atk = tower->atk;
 	    x = tower1->x;
@@ -36,23 +36,22 @@ class bullet
 	    x = int(x_e);
 	    y = int(y_e);
 	    if(kind%3==0){
-		quad.x = x;
-		quad.y = y;
+			quad.x = x;
+			quad.y = y;
 	    }
 	    else{
-		quad.x = x+22;
-		quad.y = y+22;
+			quad.x = x+22;
+			quad.y = y+22;
 	    }
 	}
 	bool touch(enemy* enemy1)
 	{
-	    if(pow(enemy1.x->x,2)+pow(enemy1->y-y,2)<3600)
-	    {
+		//distance unsure
+	    if(pow(enemy1.x->x,2)+pow(enemy1->y-y,2)<3600){
     		return true;
 	    }
-	    else
-	    {
-		return false;
+	    else{
+			return false;
 	    }	
 	}
 	SDL_Rect quad = {0,0,80,80};
