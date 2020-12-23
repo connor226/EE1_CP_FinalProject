@@ -56,7 +56,7 @@ class ENEMY{
 			switch(type){
 				case 1:{  //Light_Soldier
 					hp = 75;
-					speed = 4;
+					speed = 3;
 					money = 2;
 					break;
 				}
@@ -67,20 +67,20 @@ class ENEMY{
 					break;
 				}
 				case 3:{  //Light_Tank
-					hp = 150;
+					hp = 250;
 					speed = 1;
 					money = 5;
 					break;
 				}
 				case 4:{  //Heavy_Tank
-					hp = 200;
+					hp = 500;
 					speed = 1;
 					money = 10;
 					break;
 				}
 			}
-			rect.w = 80;
-			rect.h = 80;
+			rect.w = TOWER_WIDTH;
+			rect.h = TOWER_WIDTH;
 			CanFly = false;
 			dir = RIGHT;
 		}
@@ -114,17 +114,23 @@ class ENEMY{
 				if(path.shortest_path.size() > 1){
 					if(path.shortest_path[1].pos - pos == DIR[RIGHT]){
 						rect.x += speed;
+						dir = RIGHT;
 					}
 					if(path.shortest_path[1].pos - pos == DIR[LEFT]){
 						rect.x -= speed;
+						dir = LEFT;
 					}
 					if(path.shortest_path[1].pos - pos == DIR[UP]){
 						rect.y -= speed;
+						dir = UP;
 					}
 					if(path.shortest_path[1].pos - pos == DIR[DOWN]){
 						rect.x += speed;
+						dir = DOWN;
 					}
-					
+					if(abs(rect.x - 80 - pos.X * TOWER_WIDTH) >= TOWER_WIDTH || abs(rect.y - 70 - pos.Y * TOWER_WIDTH) >= TOWER_WIDTH){
+						pos = path.shortest_path[1].pos;
+					}
 				}
 				else{
 					/*
