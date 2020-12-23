@@ -48,37 +48,7 @@ tower*** towers=new tower**[18];
 SDL_Texture* tower_pic[9];
 SDL_Rect towerClips[6][32];
 SDL_Rect towerClips2[3][8];
-for(int j=0;j<6;j++)
-{
-    for (int i = 0; i < 32; i++)
-    {
-        towerClips[j][i].x = 70 * (i + 1);
-        towerClips[j][i].y = 0;
-        towerClips[j][i].w= 70;
-        towerClips[j][i].h = 70;
-    }
-}
-for(int j=0;j<3;j++)
-{
-    for (int i = 0; i < 8; i++)
-    {
-        towerClips2[j][i].x = 70 * (i + 1);
-        towerClips2[j][i].y = 0;
-        towerClips2[j][i].w = 70;
-        towerClips2[j][i].h = 70;
-    }
-}	
-for(int i=0;i<18;i++)
-{
-    towers[i] = new tower*[10];
-}
-for(int i=0;i<18;i++)
-{
-    for(int j=0;j<10;j++)
-    {
-	towers[i][j]=NULL;
-    }
-}
+
 //tower
 
 //bullet's thing
@@ -167,9 +137,9 @@ void loadmedia()
     loadedSurface = IMG_Load("pictures/Light_Gun.png");
     bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Medium_Gun.png");
-    tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    bullet_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
-    tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
     background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Light_Gun.png");
@@ -217,6 +187,37 @@ tower* upgrade(x,y,tower* old)
 
 int main( int argc, char* args[] )
 {
+	for(int j=0;j<6;j++)
+	{
+		for (int i = 0; i < 32; i++)
+		{
+			towerClips[j][i].x = 70 * (i + 1);
+			towerClips[j][i].y = 0;
+			towerClips[j][i].w= 70;
+			towerClips[j][i].h = 70;
+		}
+	}
+	for(int j=0;j<3;j++)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			towerClips2[j][i].x = 70 * (i + 1);
+			towerClips2[j][i].y = 0;
+			towerClips2[j][i].w = 70;
+			towerClips2[j][i].h = 70;
+		}
+	}
+	for(int i=0;i<18;i++)
+	{
+		towers[i] = new tower*[10];
+	}
+	for(int i=0;i<18;i++)
+	{
+		for(int j=0;j<10;j++)
+		{
+		towers[i][j]=NULL;
+		}
+	}
 	//Start up SDL and create window
 	if( !init() ){
 		printf( "Failed to initialize!\n" );
