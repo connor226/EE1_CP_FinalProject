@@ -83,7 +83,7 @@ class tower{
             return false;
         }
         void rotate(){
-            if(true)
+            if(kind>6)
             {
                 if(lock){
                         calculated_theta = (atan2(y-locked_enemy->pos.first,locked_enemy->pos.second-x))*180/3.14159;
