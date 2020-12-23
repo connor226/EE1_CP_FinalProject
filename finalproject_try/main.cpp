@@ -305,17 +305,19 @@ int main( int argc, char* args[] )
 								rocketflag = true;
 							}
 						}
-						if (e.button.button = SDL_BUTTON_RIGHT)
+						if (e.button.button == SDL_BUTTON_RIGHT)
 						{
 							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 							p = (mouse_position.x - 80) / 90;
 							q = (mouse_position.y - 70) / 90;
-							towers[0][0] = new tower(0, 0, 0);
-							/*if (towers[p][q] != NULL)
+							if (p >= 0 && p < 18 && q >= 0 && q < 10)
 							{
-								delete towers[p][q];
-								towers[p][q] = NULL;
-							}*/
+								if (towers[p][q] != NULL)
+								{
+									delete towers[p][q];
+									towers[p][q] = NULL;
+								}
+							}
 						}
 					}
 				}
