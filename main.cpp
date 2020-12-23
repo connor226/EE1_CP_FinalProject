@@ -249,7 +249,7 @@ int main( int argc, char* args[] )
 				SDL_RenderCopy(gRenderer, background, NULL, NULL);
 				
 				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 ){
+				while( SDL_PollEvent( &e ) != 0 )  {
 					//User requests quit
 					if( e.type == SDL_QUIT ){
 						quit = true;
@@ -257,26 +257,29 @@ int main( int argc, char* args[] )
                     if ( e.type == SDL_MOUSEBUTTONDOWN )
 					{
 						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
+						int p, q;
+						p = (mouse_position.x - 80) / 90;
+						q = (mouse_position.y - 70) / 90;
 						if (lightflag == true)
 						{
-							/*
-							int p,q
-							p=(mouse_position.x-80)/90;
-							q=(mouse_position.y-70)/90;
-							build the tower on the point (p,q);
-							 */
+							if (towers[p][q] == NULL)
+							{
+								towers[p][q] = new tower(p, q, 0);
+							}
 							lightflag = false;
 							continue;
 						}else if (slowflag == true){
-							/*
-							 build
-							*/
+							if (towers[p][q] == NULL)
+							{
+								towers[p][q] = new tower(p, q, 6);
+							}
 							slowflag = false;
 							continue;
 						}else if (rocketflag == true){
-							/*
-							 build
-							*/
+							if (towers[p][q] == NULL)
+							{
+								towers[p][q] = new tower(p, q, 3);
+							}
 							rocketflag = false;
 							continue;
 						}
@@ -297,43 +300,6 @@ int main( int argc, char* args[] )
 							{
 								rocketflag = true;
 							}
-						}
-					}
-
-					if (lightflag == true)
-					{
-						if (e.type == SDL_MOUSEMOTION)
-						{
-							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							lightrect.x = mouse_position.x-45;
-							lightrect.y = mouse_position.y-45;
-							SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
-							SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
-						}
-					}
-					if (slowflag == true)
-					{
-						if (e.type == SDL_MOUSEMOTION)
-						{
-							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							slowrect.x = mouse_position.x-45;
-							slowrect.y = mouse_position.y-45;
-							SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(slow, 192);
-							SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
-						}
-					}
-					if (rocketflag == true)
-					{
-						if (e.type == SDL_MOUSEMOTION)
-						{
-							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-							rocketrect.x = mouse_position.x-45;
-							rocketrect.y = mouse_position.y-45;
-							SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
-							SDL_SetTextureAlphaMod(rocket, 192);
-							SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
 						}
 					}
 				}
@@ -416,10 +382,37 @@ int main( int argc, char* args[] )
                     SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
                 }
                 //enemies motion
+
+
                 //render buttom
-                SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
-				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
-				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
+				if (lightflag == true)
+				{
+					SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+					lightrect.x = mouse_position.x - 45;
+					lightrect.y = mouse_position.y - 45;
+					SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
+					SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
+					SDL_RenderCopy(gRenderer, light, NULL, &lightrect);
+				}
+				if (slowflag == true)
+				{
+					SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+					slowrect.x = mouse_position.x - 45;
+					slowrect.y = mouse_position.y - 45;
+					SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
+					SDL_SetTextureAlphaMod(slow, 192);
+					SDL_RenderCopy(gRenderer, slow, NULL, &slowrect);
+				}
+				if (rocketflag == true)
+				{
+					SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+					rocketrect.x = mouse_position.x - 45;
+					rocketrect.y = mouse_position.y - 45;
+					SDL_SetTextureBlendMode(rocket, SDL_BLENDMODE_BLEND);
+					SDL_SetTextureAlphaMod(rocket, 192);
+					SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
+				}
+				SDL_RenderPresent(gRenderer);
             }
         }
     }
