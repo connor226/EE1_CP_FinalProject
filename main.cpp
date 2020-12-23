@@ -239,11 +239,22 @@ int main( int argc, char* args[] )
                     }
                 }
                 //bullets motion
-                for(int i=0;i<bullets.size();i++)
+                for(int i=bullets.size()-1;i>=0;i--)
                 {
                     bullets[i]->move();
-                    SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
+		    for(int j=0;j<enemies.size();j++){
+		        if(bullets[i]->touch(enemies[j])){
+			    enemies[j]->hp -= bullets[i]->atk;//
+		            delete bullets[i];
+  			    bullets[i] = NULL;
+			    bullets.erase(bullets.begin()+i);
+			    break;
+			}
+		    }
                 }
+		for(int i=0;i<bullets.size();i++){
+			 SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
+		}
                 }
                 //end
             }

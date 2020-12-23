@@ -8,13 +8,15 @@
 #endif
 class tower{
     public:
-	friend class enemy;
+	friend class ENENMY;
         tower(int num_x, int num_y, int kind) :x(80+num_x*90), y(70+num_y*90), theta(0), lock(false), locked_enemy(NULL)
         {
 	    type = kind;
 	    quad.x = x;
 	    quad.y = y;
             t = SDL_GetTicks();
+	    x += 45;
+	    y += 45;
             switch (kind){
             case 0:
                 atk = 5;
@@ -74,7 +76,7 @@ class tower{
                 false;
             }
         }
-        bool inrange(enemy* monster)
+        bool inrange(enemy* monster)//check if enemy is in tower range
         {
             if (pow((monster->x - x), 2) + pow((monster->y - y), 2) > pow(range, 2))
             {
@@ -82,12 +84,9 @@ class tower{
                 locked_enemy = monster;
                 return true;
             }
-            else
-            {
-                false;
-            }
+            return false;
         }
-        void rotate()
+        void rotate()//for gun and rocket, it rotates. for slow tower, it shines
         {
 	    if(kind<6)
 	    {
