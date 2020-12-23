@@ -9,9 +9,9 @@
 class tower{
     public:
 	friend class ENEMY;
-        tower(int num_x, int num_y, int kind) :x(80+num_x*90), y(70+num_y*90), theta(0), lock(false), locked_enemy(NULL)
+        tower(int num_x, int num_y, int type) :x(80+num_x*90), y(70+num_y*90), theta(0), lock(false), locked_enemy(NULL)
         {
-            type = kind;
+            kind = type;
             quad.x = x;
             quad.y = y;
             t = SDL_GetTicks();
@@ -95,7 +95,7 @@ class tower{
             }
         }
 	int theta;
-	int type;
+	int kind;
 	SDL_Rect quad={0,0,90,90};
     int x,y;
     int atk;
@@ -103,8 +103,6 @@ class tower{
     int t;
     double calculated_theta;
     int cooltime;
-    //int width;
-    //int height;
     bool lock;
     ENEMY* locked_enemy;
 };
