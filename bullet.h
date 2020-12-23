@@ -5,7 +5,7 @@ class bullet
 {
     public:
 	friend class tower;
-	bullet(tower* tower1, enemy* enemy1){
+	bullet(tower* tower1, ENEMY* enemy1){
 	    kind = tower1->kind%3;
 	    speed = 50;
 	    atk = tower->atk;
@@ -44,7 +44,7 @@ class bullet
 			quad.y = y+22;
 	    }
 	}
-	bool touch(enemy* enemy1)
+	bool touch(ENEMY* enemy1)
 	{
 		//distance unsure
 	    if(pow(enemy1.x->x,2)+pow(enemy1->y-y,2)<3600){
