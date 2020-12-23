@@ -74,7 +74,7 @@ class tower{
         }
         bool inrange(ENEMY* monster)//check if enemy is in tower range
         {
-            if (pow((monster->x - x), 2) + pow((monster->y - y), 2) > pow(range, 2))
+            if (pow((monster->pos.first - x), 2) + pow((monster->pos.second - y), 2) > pow(range, 2))
             {
                 lock = true;
                 locked_enemy = monster;
