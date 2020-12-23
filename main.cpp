@@ -122,11 +122,11 @@ void loadmedia()
     tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
     tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher.pngpng");
+    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher.png");
     tower_pic[3] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Medium_Rocket_Launcher.png.png");
+    loadedSurface = IMG_Load("pictures/Medium_Rocket_Launcher.png");
     tower_pic[4] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Heavy_Rocket_Launcher.png.png");
+    loadedSurface = IMG_Load("pictures/Heavy_Rocket_Launcher.png");
     tower_pic[5] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     loadedSurface = IMG_Load("pictures/Basic_Slow_Tower.png");
     tower_pic[6] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
