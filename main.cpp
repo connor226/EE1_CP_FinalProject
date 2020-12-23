@@ -4,7 +4,7 @@
 #include <string>
 #include"tower.h"
 #include<vector>
-#include"ENEMY.h"
+#include"enemy.h"
 #include"bullet.h"
 
 using namespace std;
@@ -22,7 +22,7 @@ SDL_Texture* background;
 SDL_Texture* light;
 SDL_Texture* slow;
 SDL_Texture* rocket;
-const SDL_Rect initiallight = { 80,70,90,90 };
+const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
 SDL_Rect lightrect= { 1720,910,80,80 };
@@ -61,7 +61,7 @@ vector<ENEMY*> enemies;
 //enemy
 
 //init
-void init()
+bool init()
 {
 	//Initialization flag
 	bool success = true;
@@ -112,9 +112,9 @@ void init()
 		}
 	}
 
-	//return success;
+	return success;
 }
-void loadmedia()
+bool loadmedia()
 {
     SDL_Surface* loadedSurface = IMG_Load("pictures/Light_Gun.png");
     tower_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
@@ -149,6 +149,7 @@ void loadmedia()
     loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher_user.png");
     rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     SDL_FreeSurface(loadedSurface);
+	return true;
 }
 
 void close()
@@ -178,10 +179,10 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 }
-tower* upgrade(x,y,tower* old)
+tower* upgrade(int x, int y,tower* old)
 {
-    tower* x = new tower(x,y,old->kind+1);
-    return x;
+    tower* n = new tower(x,y,old->kind+1);
+    return n;
 }
 
 
@@ -224,7 +225,7 @@ int main( int argc, char* args[] )
 	}
 	else{
 		//Load media
-		if( !loadMedia() ){
+		if( !loadmedia() ){
 			printf( "Failed to load media!\n" );
 		}
 		else{	
@@ -247,6 +248,9 @@ int main( int argc, char* args[] )
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 				SDL_RenderCopy(gRenderer, background, NULL, NULL);
+				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
+				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
+				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
 				
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )  {
@@ -301,6 +305,20 @@ int main( int argc, char* args[] )
 								rocketflag = true;
 							}
 						}
+						if (e.button.button == SDL_BUTTON_RIGHT)
+						{
+							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+							p = (mouse_position.x - 80) / 90;
+							q = (mouse_position.y - 70) / 90;
+							if (p >= 0 && p < 18 && q >= 0 && q < 10)
+							{
+								if (towers[p][q] != NULL)
+								{
+									delete towers[p][q];
+									towers[p][q] = NULL;
+								}
+							}
+						}
 					}
 				}
                 //unfreeze
@@ -310,59 +328,60 @@ int main( int argc, char* args[] )
                 //tower motion
                 for(int i=0;i<18;i++){
                     for(int j=0;j<10;j++){
-                        if(towers[i][j]!=NULL){
-                            //render tower
-                            if(towers[i][j]->kind<6){
-                                if(towers[i][j]->lock==false){
-                                    for(int k=0;k<enemies.size();k++){
-                                        if(towers[i][j]->inrange(enemies[k]){
-                                            towers[i][j]->rotate();
-                                            if(towers[i][j]->ableatk(SDL_GetTicks())){
-                                                //make a bullet
-                                                bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
-                                                bullets.push_back(x);
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            else{
-                                if(towers[i][j]->inrange(towers[i][j]->lock_enemy)){
-                                    towers[i][j]->rotate();
-                                    if(towers[i][j]->ableatk(SDL_GetTicks())){
-                                        //make a bullet
-                                        bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
-                                        bullets.push_back(x);
-                                    }
-                                }
-                                else{
-                                    towers[i][j]->lock=false;
-                                    for(int k=0;k<enemies.size();k++){
-                                        if(towers[i][j]->inrange(enemies[k]){
-                                            towers[i][j]->rotate();
-                                            if(towers[i][j]->ableatk(SDL_GetTicks())){
-                                            //make a bullet
-                                                bullet* x = new bullet(towers[i][j], towers[i][j]->lock_enemy);
-                                                bullets.push_back(x);
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                            SDL_RenderCopy(gRender, tower_pic[towers[i][j]->kind], &towerClips[towers[i][j]->theta], &towers[i][j]->quad);
-                            }
-                        }
-                        else{
-                            for(int k=0;k<enemies.size();k++){
-                                if(towers[i][j]->inrange(enemies[k])
-                                {
-                                    enemies[k].freeze = towers[i][j]->atk;
-                                }
-                            }
-                            towers[i][j]->rotate();
-                            SDL_RenderCopy(gRender, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->theta], &towers[i][j]->quad)
-                        } 
+						if (towers[i][j] != NULL) {
+							//render tower
+							if (towers[i][j]->kind < 6) {
+								if (towers[i][j]->lock == false) {
+									for (int k = 0; k < enemies.size(); k++) {
+										if (towers[i][j]->inrange(enemies[k]))
+										{
+											towers[i][j]->rotate();
+											if (towers[i][j]->ableatk(SDL_GetTicks())) {
+												//make a bullet
+												bullet* x = new bullet(towers[i][j], towers[i][j]->locked_enemy);
+												bullets.push_back(x);
+											}
+											break;
+										}
+									}
+								}
+								else {
+									if (towers[i][j]->inrange(towers[i][j]->locked_enemy)) {
+										towers[i][j]->rotate();
+										if (towers[i][j]->ableatk(SDL_GetTicks())) {
+											//make a bullet
+											bullet* x = new bullet(towers[i][j], towers[i][j]->locked_enemy);
+											bullets.push_back(x);
+										}
+									}
+									else {
+										towers[i][j]->lock = false;
+										for (int k = 0; k < enemies.size(); k++) {
+											if (towers[i][j]->inrange(enemies[k])) {
+												towers[i][j]->rotate();
+												if (towers[i][j]->ableatk(SDL_GetTicks())) {
+													//make a bullet
+													bullet* x = new bullet(towers[i][j], towers[i][j]->locked_enemy);
+													bullets.push_back(x);
+												}
+												break;
+											}
+										}
+									}
+								}
+								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips[towers[i][j]->kind][towers[i][j]->theta], &towers[i][j]->quad);
+							}
+							else {
+								for (int k = 0; k < enemies.size(); k++) {
+									if (towers[i][j]->inrange(enemies[k]))
+									{
+										enemies[k]->freeze = towers[i][j]->atk;
+									}
+								}
+								towers[i][j]->rotate();
+								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->kind-6][towers[i][j]->theta], &towers[i][j]->quad);
+							}
+						}
                     }
                 }
                 //bullets motion
@@ -379,7 +398,7 @@ int main( int argc, char* args[] )
 		            }
                 }
                 for(int i=0;i<bullets.size();i++){
-                    SDL_RenderCopy(gRender, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad)
+					SDL_RenderCopy(gRenderer, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad);
                 }
                 //enemies motion
 
@@ -416,6 +435,7 @@ int main( int argc, char* args[] )
             }
         }
     }
+	return 0;
 }
 
 //making tower
