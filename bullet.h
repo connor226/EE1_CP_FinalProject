@@ -1,3 +1,4 @@
+#ifndef 
 #include"tower.h"
 #include"enemy.h"
 #include<cmath>
@@ -24,8 +25,8 @@ class bullet
 			quad.w = 90;
 			quad.h = 90;
 	    }
-	    v_x = (enemy1->x-tower1->x)/speed;
-	    v_y = (enemy1->y-tower1->y)/speed;
+	    v_x = (enemy1->pos.first-tower1->x)/speed;
+	    v_y = (enemy1->pos.second-tower1->y)/speed;
 	    x_e = x;
 	    y_e = y;
 	}

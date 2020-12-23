@@ -47,6 +47,7 @@ class val{
 
 class ENEMY{
 	public:
+		int freeze; //use for slow tower
 		bool CanFly;
 		int hp, speed, dir, money;
 		pii pos;
