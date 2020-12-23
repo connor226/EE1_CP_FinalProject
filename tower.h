@@ -1,10 +1,11 @@
+#ifndef TOWER_H
+#define TOWER_H
 #include"SDL.h"
 #include"ENEMY.h"
 //#include"final/const.h"
 #include<cmath>
 #define PI 3.14159265
-#ifndef TOWER_H
-#define TOWER_H
+
 
 class tower{
     public:
