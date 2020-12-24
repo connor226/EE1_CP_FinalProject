@@ -259,6 +259,7 @@ int main( int argc, char* args[] )
 					if( e.type == SDL_QUIT ){
 						quit = true;
 					}
+					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)  quit = true;
                     if ( e.type == SDL_MOUSEBUTTONDOWN )
 					{
 						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
