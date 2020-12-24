@@ -5,7 +5,6 @@
 
 
 #include "SDL.h"
-#include "SDL_image.h"
 
 
 using namespace std;
@@ -78,6 +77,7 @@ public:
 			break;
 		}
 		}
+		freeze = 0;
 		rect.w = 90;
 		rect.h = 90;
 		CanFly = false;

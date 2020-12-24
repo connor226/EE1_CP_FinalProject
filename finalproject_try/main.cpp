@@ -1,5 +1,5 @@
 #include <SDL.h>
-#include <SDL_image.h>
+#include "SDL_image.h"
 #include <stdio.h>
 #include <string>
 #include"tower.h"
@@ -114,6 +114,7 @@ bool init()
 
 	return success;
 }
+
 bool loadmedia()
 {
     SDL_Surface* loadedSurface = IMG_Load("pictures/Light_Gun.png");
