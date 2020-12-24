@@ -1,4 +1,5 @@
 ﻿  main.cpp
-C:\Users\Connor\Desktop\EE1_CP_FinalProject\finalproject_try\main.cpp(389,17): warning C4267: '正在初始化': 將 'size_t' 轉換為 'int'，資料可能遺失
-C:\Users\Connor\Desktop\EE1_CP_FinalProject\finalproject_try\tower.h(74): warning C4715: 'tower::ableatk': 不是所有控制路徑都傳回值
-  finalproject.vcxproj -> C:\Users\Connor\Desktop\EE1_CP_FinalProject\finalproject_try\x64\Debug\finalproject.exe
+C:\Users\stati\cp_final\EE1_CP_FinalProject\finalproject_try\main.cpp(389,17): warning C4267: '正在初始化': 將 'size_t' 轉換為 'int'，資料可能遺失
+C:\Users\stati\cp_final\EE1_CP_FinalProject\finalproject_try\tower.h(74): warning C4715: 'tower::ableatk': 不是所有控制路徑都傳回值
+  LINK : 最後的累加連結找不到或未建置 C:\Users\stati\cp_final\EE1_CP_FinalProject\finalproject_try\x64\Debug\finalproject.exe，正在執行完整連結
+  finalproject.vcxproj -> C:\Users\stati\cp_final\EE1_CP_FinalProject\finalproject_try\x64\Debug\finalproject.exe
