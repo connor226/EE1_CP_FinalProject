@@ -18,21 +18,24 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 //map's things
+enum gamestatus { play, upgrading };
 SDL_Texture* background;
 SDL_Texture* light;
 SDL_Texture* slow;
 SDL_Texture* rocket;
+SDL_Texture* user;
 const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
-SDL_Rect lightrect= { 1720,910,80,80 };
+const SDL_Rect userrect = { 100,100,700,500 };
+SDL_Rect lightrect = { 1720,910,80,80 };
 SDL_Rect slowrect = { 1720,820,80,80 };
 SDL_Rect rocketrect = { 1720,730,80,80 };
 SDL_Point mouse_position;
 
 bool point_in_rect(SDL_Point p, const SDL_Rect r)
 {
-	if ((p.x>r.x)&&(p.x<r.x+r.w)&&(p.y>r.y)&&(p.y<r.y+r.h))
+	if ((p.x > r.x) && (p.x < r.x + r.w) && (p.y > r.y) && (p.y < r.y + r.h))
 	{
 		return true;
 	}
@@ -44,7 +47,7 @@ bool point_in_rect(SDL_Point p, const SDL_Rect r)
 //map
 
 //tower's thing
-tower*** towers=new tower**[18];
+tower*** towers = new tower * *[18];
 SDL_Texture* tower_pic[9];
 SDL_Rect towerClips[6][32];
 SDL_Rect towerClips2[3][8];
@@ -117,50 +120,52 @@ bool init()
 
 bool loadmedia()
 {
-    SDL_Surface* loadedSurface = IMG_Load("pictures/Light_Gun.png");
-    tower_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Medium_Gun.png");
-    tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
-    tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher.png");
-    tower_pic[3] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Medium_Rocket_Launcher.png");
-    tower_pic[4] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Heavy_Rocket_Launcher.png");
-    tower_pic[5] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Basic_Slow_Tower.png");
-    tower_pic[6] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Upgraded_Slow_Tower.png");
-    tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Adavanced_Slow_Tower3.png");
-    tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Gun.png");
-    bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Medium_Gun.png");
-    bullet_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
-    bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
-    background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Gun_user.png");
-    light = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Slow_Tower_user.png");
-    slow = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher_user.png");
-    rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-    SDL_FreeSurface(loadedSurface);
+	SDL_Surface* loadedSurface = IMG_Load("pictures/Light_Gun.png");
+	tower_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Medium_Gun.png");
+	tower_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
+	tower_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher.png");
+	tower_pic[3] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Medium_Rocket_Launcher.png");
+	tower_pic[4] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Heavy_Rocket_Launcher.png");
+	tower_pic[5] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Basic_Slow_Tower.png");
+	tower_pic[6] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Upgraded_Slow_Tower.png");
+	tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Advanced_Slow_Tower3.png");
+	tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Light_Gun.png");
+	bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Medium_Gun.png");
+	bullet_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
+	bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
+	background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Light_Gun_user.png");
+	light = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Slow_Tower_user.png");
+	slow = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher_user.png");
+	rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	loadedSurface = IMG_Load("pictures/Light_Gun.png"); // new include
+	user = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);
 	return true;
 }
 
 void close()
 {
 	//Free loaded images
-    for(int i=0;i<9;i++)
-    {
-        SDL_DestroyTexture(tower_pic[i]);
-        tower_pic[i] = NULL;
-    }
+	for (int i = 0; i < 9; i++)
+	{
+		SDL_DestroyTexture(tower_pic[i]);
+		tower_pic[i] = NULL;
+	}
 	SDL_DestroyTexture(light);
 	light = NULL;
 	SDL_DestroyTexture(slow);
@@ -180,26 +185,28 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 }
-tower* upgrade(int x, int y,tower* old)
+void upgrade(int x, int y, tower* old)
 {
-    tower* n = new tower(x,y,old->kind+1);
-    return n;
+	int c = old->kind + 1;
+	delete towers[x][y];
+	towers[x][y] = NULL;
+	towers[x][y] = new tower(x, y, c);
 }
 
 
-int main( int argc, char* args[] )
+int main(int argc, char* args[])
 {
-	for(int j=0;j<6;j++)
+	for (int j = 0; j < 6; j++)
 	{
 		for (int i = 0; i < 32; i++)
 		{
 			towerClips[j][i].x = 70 * (i + 1);
 			towerClips[j][i].y = 0;
-			towerClips[j][i].w= 70;
+			towerClips[j][i].w = 70;
 			towerClips[j][i].h = 70;
 		}
 	}
-	for(int j=0;j<3;j++)
+	for (int j = 0; j < 3; j++)
 	{
 		for (int i = 0; i < 8; i++)
 		{
@@ -209,38 +216,41 @@ int main( int argc, char* args[] )
 			towerClips2[j][i].h = 70;
 		}
 	}
-	for(int i=0;i<18;i++)
+	for (int i = 0; i < 18; i++)
 	{
-		towers[i] = new tower*[10];
+		towers[i] = new tower * [10];
 	}
-	for(int i=0;i<18;i++)
+	for (int i = 0; i < 18; i++)
 	{
-		for(int j=0;j<10;j++)
+		for (int j = 0; j < 10; j++)
 		{
-		towers[i][j]=NULL;
+			towers[i][j] = NULL;
 		}
 	}
 	//Start up SDL and create window
-	if( !init() ){
-		printf( "Failed to initialize!\n" );
+	if (!init()) {
+		printf("Failed to initialize!\n");
 	}
-	else{
+	else {
 		//Load media
-		if( !loadmedia() ){
-			printf( "Failed to load media!\n" );
+		if (!loadmedia()) {
+			printf("Failed to load media!\n");
 		}
-		else{	
+		else {
 			//Main loop flag
+			int p, q, tempx, tempy;
 			bool quit = false;
-            bool lightflag = false;
+			bool lightflag = false;
 			bool slowflag = false;
 			bool rocketflag = false;
 			//Event handler
 			SDL_Event e;
-
+			gamestatus status = play;
 			//While application is running
-			while( !quit ){
-                SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
+			while (!quit) {
+
+
+				SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
 				SDL_SetTextureAlphaMod(light, 255);
 				SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
 				SDL_SetTextureAlphaMod(slow, 255);
@@ -252,84 +262,99 @@ int main( int argc, char* args[] )
 				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
 				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
 				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
-				
+
+
 				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )  {
+				while (SDL_PollEvent(&e) != 0) {
 					//User requests quit
-					if( e.type == SDL_QUIT ){
+					if (e.type == SDL_QUIT) {
 						quit = true;
 					}
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)  quit = true;
-                    if ( e.type == SDL_MOUSEBUTTONDOWN )
+					if (e.type == SDL_MOUSEBUTTONDOWN)
 					{
-						SDL_GetMouseState(& mouse_position.x, &mouse_position.y);
-						int p, q;
-						p = (mouse_position.x - 80) / 90;
-						q = (mouse_position.y - 70) / 90;
-						if (lightflag == true)
+						SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+						if (status == play)
 						{
-							if (towers[p][q] == NULL)
-							{
-								towers[p][q] = new tower(p, q, 0);
-							}
-							lightflag = false;
-							continue;
-						}else if (slowflag == true){
-							if (towers[p][q] == NULL)
-							{
-								towers[p][q] = new tower(p, q, 6);
-							}
-							slowflag = false;
-							continue;
-						}else if (rocketflag == true){
-							if (towers[p][q] == NULL)
-							{
-								towers[p][q] = new tower(p, q, 3);
-							}
-							rocketflag = false;
-							continue;
-						}
-
-						if (point_in_rect(mouse_position, initiallight) == true)
-						{
-							if (lightflag == false)
-							{
-								lightflag = true;
-							}							
-						}else if (point_in_rect(mouse_position, initialslow) == true){
-							if (slowflag == false)
-							{
-								slowflag = true;
-							}
-						}else if (point_in_rect(mouse_position, initialrocket) == true){
-							if (rocketflag == false)
-							{
-								rocketflag = true;
-							}
-						}
-						if (e.button.button == SDL_BUTTON_RIGHT)
-						{
-							SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 							p = (mouse_position.x - 80) / 90;
 							q = (mouse_position.y - 70) / 90;
-							if (p >= 0 && p < 18 && q >= 0 && q < 10)
+							if ((lightflag == true || slowflag == true || rocketflag == true))//building mode
 							{
-								if (towers[p][q] != NULL)
+								if (p < 18 && p >= 0 && q < 10 && q >= 0) {//check
+									if (lightflag == true) {
+										if (towers[p][q] == NULL)
+										{
+											towers[p][q] = new tower(p, q, 0);
+										}
+										lightflag = false;
+									}
+									if (slowflag == true) {
+										if (towers[p][q] == NULL)
+										{
+											towers[p][q] = new tower(p, q, 6);
+										}
+										slowflag = false;
+									}
+									if (rocketflag == true) {
+										if (towers[p][q] == NULL)
+										{
+											towers[p][q] = new tower(p, q, 3);
+										}
+										rocketflag = false;
+									}
+								}
+							}
+							else {//mutiple funtion
+								if (point_in_rect(mouse_position, initiallight) == true)
 								{
-									delete towers[p][q];
-									towers[p][q] = NULL;
+									lightflag = true;
+								}
+								else if (point_in_rect(mouse_position, initialslow) == true)
+								{
+									slowflag = true;
+								}
+								else if (point_in_rect(mouse_position, initialrocket) == true)
+								{
+									rocketflag = true;
+								}
+								else if (p < 18 && p >= 0 && q < 10 && q >= 0)
+								{
+									if (towers[p][q] != NULL) //trying to upgrade or remove
+									{
+										tempx = p;
+										tempy = q;
+										status = upgrading;
+									}
+								}
+							}
+						}
+						else if (status == upgrading)
+						{
+							if (point_in_rect(mouse_position, userrect))
+							{
+								if (mouse_position.x < (userrect.x + (userrect.x + userrect.w / 2))) //asking to upgrade
+								{
+									upgrade(tempx, tempy, towers[tempx][tempy]);
+									//printf("%d", towers[tempx][tempy]->kind);
+									status = play;
+								}
+								else //sell
+								{
+									delete towers[tempx][tempy];
+									towers[tempx][tempy] = NULL;
+									status = play;
 								}
 							}
 						}
 					}
 				}
-                //unfreeze
-                for(int i=0;i<enemies.size();i++){
-                    enemies[i]->freeze = false;
-                }
-                //tower motion
-                for(int i=0;i<18;i++){
-                    for(int j=0;j<10;j++){
+				//unfreeze
+				for (int i = 0; i < enemies.size(); i++) {
+					enemies[i]->freeze = false;
+				}
+				//tower motion
+				for (int i = 0; i < 18; i++) {
+					for (int j = 0; j < 10; j++) {
 						if (towers[i][j] != NULL) {
 							//render tower
 							if (towers[i][j]->kind < 6) {
@@ -373,7 +398,7 @@ int main( int argc, char* args[] )
 								}
 								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips[towers[i][j]->kind][towers[i][j]->theta], &towers[i][j]->quad);
 							}
-							else {
+							else {//slow tower
 								for (int k = 0; k < enemies.size(); k++) {
 									if (towers[i][j]->inrange(enemies[k]))
 									{
@@ -381,31 +406,31 @@ int main( int argc, char* args[] )
 									}
 								}
 								towers[i][j]->rotate();
-								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->kind-6][towers[i][j]->theta], &towers[i][j]->quad);
+								SDL_RenderCopy(gRenderer, tower_pic[towers[i][j]->kind], &towerClips2[towers[i][j]->kind - 6][towers[i][j]->theta], &towers[i][j]->quad);
 							}
 						}
-                    }
-                }
-                //bullets motion
-                for(int i=bullets.size()-1;i>=0;i--){
-                    bullets[i]->move();
-		            for(int j=0;j<enemies.size();j++){
-		                if(bullets[i]->touch(enemies[j])){
-			                enemies[j]->hp -= bullets[i]->atk;//
-		                    delete bullets[i];
-  			                bullets[i] = NULL;
-			                bullets.erase(bullets.begin()+i);
-			            break;
-			            }
-		            }
-                }
-                for(int i=0;i<bullets.size();i++){
+					}
+				}
+				//bullets motion
+				for (int i = bullets.size() - 1; i >= 0; i--) {
+					bullets[i]->move();
+					for (int j = 0; j < enemies.size(); j++) {
+						if (bullets[i]->touch(enemies[j])) {
+							enemies[j]->hp -= bullets[i]->atk;//
+							delete bullets[i];
+							bullets[i] = NULL;
+							bullets.erase(bullets.begin() + i);
+							break;
+						}
+					}
+				}
+				for (int i = 0; i < bullets.size(); i++) {
 					SDL_RenderCopy(gRenderer, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad);
-                }
-                //enemies motion
+				}
+				//enemies motion
 
 
-                //render buttom
+				//render buttom
 				if (lightflag == true)
 				{
 					SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
@@ -433,10 +458,13 @@ int main( int argc, char* args[] )
 					SDL_SetTextureAlphaMod(rocket, 192);
 					SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
 				}
+				if (status == upgrading) {
+					SDL_RenderCopy(gRenderer, user, NULL, &userrect);
+				}
 				SDL_RenderPresent(gRenderer);
-            }
-        }
-    }
+			}
+		}
+	}
 	return 0;
 }
 
@@ -445,4 +473,4 @@ int main( int argc, char* args[] )
 //destroy tower
 //delete towers[i][j];
 //towers[i][j]=NULL;
-	
+
