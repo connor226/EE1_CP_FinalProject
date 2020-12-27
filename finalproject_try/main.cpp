@@ -27,7 +27,7 @@ SDL_Texture* user;
 const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
-const SDL_Rect userrect = { 100,100,700,500 };
+SDL_Rect userrect = { 100,100,400,300 };
 SDL_Rect lightrect = { 1720,910,80,80 };
 SDL_Rect slowrect = { 1720,820,80,80 };
 SDL_Rect rocketrect = { 1720,730,80,80 };
@@ -35,12 +35,9 @@ SDL_Point mouse_position;
 
 bool point_in_rect(SDL_Point p, const SDL_Rect r)
 {
-	if ((p.x > r.x) && (p.x < r.x + r.w) && (p.y > r.y) && (p.y < r.y + r.h))
-	{
+	if ((p.x > r.x) && (p.x < r.x + r.w) && (p.y > r.y) && (p.y < r.y + r.h)){
 		return true;
-	}
-	else
-	{
+	}else{
 		return false;
 	}
 }
@@ -152,7 +149,7 @@ bool loadmedia()
 	slow = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/Light_Rocket_Launcher_user.png");
 	rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Light_Gun.png"); // new include
+	loadedSurface = IMG_Load("pictures/test_user.png"); // new include
 	user = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);
 	return true;
@@ -249,7 +246,6 @@ int main(int argc, char* args[])
 			//While application is running
 			while (!quit) {
 
-
 				SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
 				SDL_SetTextureAlphaMod(light, 255);
 				SDL_SetTextureBlendMode(slow, SDL_BLENDMODE_BLEND);
@@ -262,7 +258,6 @@ int main(int argc, char* args[])
 				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
 				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
 				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
-
 
 				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0) {
@@ -332,7 +327,7 @@ int main(int argc, char* args[])
 						{
 							if (point_in_rect(mouse_position, userrect))
 							{
-								if (mouse_position.x < (userrect.x + (userrect.x + userrect.w / 2))) //asking to upgrade
+								if (mouse_position.x < (userrect.x + 200)) //asking to upgrade
 								{
 									upgrade(tempx, tempy, towers[tempx][tempy]);
 									//printf("%d", towers[tempx][tempy]->kind);
@@ -434,7 +429,7 @@ int main(int argc, char* args[])
 				if (lightflag == true)
 				{
 					SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-					lightrect.x = mouse_position.x - 45;
+					lightrect.x = mouse_position.x - 45;//
 					lightrect.y = mouse_position.y - 45;
 					SDL_SetTextureBlendMode(light, SDL_BLENDMODE_BLEND);
 					SDL_SetTextureAlphaMod(light, 192); //3/4 transparent
@@ -459,6 +454,8 @@ int main(int argc, char* args[])
 					SDL_RenderCopy(gRenderer, rocket, NULL, &rocketrect);
 				}
 				if (status == upgrading) {
+					userrect.x = 90*tempx + 35;
+					userrect.y = 90*tempy + 25;
 					SDL_RenderCopy(gRenderer, user, NULL, &userrect);
 				}
 				SDL_RenderPresent(gRenderer);
