@@ -69,28 +69,28 @@ public:
 			break;
 		}
 		case 1: {  //Light_Soldier
-			hp = 75;
+			hp = 750 * 1000;
 			speed = 5;
 			money = 2;
 			period = 12;
 			break;
 		}
 		case 2: {  //Heavy_Soldier
-			hp = 100;
+			hp = 1000 * 1000;
 			speed = 2;
 			money = 1;
 			period = 10;
 			break;
 		}
 		case 3: {  //Light_Tank
-			hp = 250;
+			hp = 2500 * 1000;
 			speed = 1;
 			money = 5;
 			period = 3;
 			break;
 		}
 		case 4: {  //Heavy_Tank
-			hp = 500;
+			hp = 5000 * 1000;
 			speed = 1;
 			money = 10;
 			period = 10;

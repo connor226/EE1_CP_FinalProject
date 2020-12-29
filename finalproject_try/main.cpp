@@ -91,7 +91,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Robo Defense", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -226,7 +226,7 @@ void LoadEnemyMedia() {
 	for (int i = 1; i <= 4; i++) {
 		if (i == 1) {
 			for (int j = 0; j < 48; j++) {
-				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].x = 70 * j;
 				enemyClips[i][j].y = 0;
 				enemyClips[i][j].w = 70;
 				enemyClips[i][j].h = 70;
@@ -234,7 +234,7 @@ void LoadEnemyMedia() {
 		}
 		else  if (i == 2) {
 			for (int j = 0; j < 40; j++) {
-				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].x = 70 * j;
 				enemyClips[i][j].y = 0;
 				enemyClips[i][j].w = 70;
 				enemyClips[i][j].h = 140;
@@ -242,7 +242,7 @@ void LoadEnemyMedia() {
 		}
 		else  if (i == 3) {
 			for (int j = 0; j < 12; j++) {
-				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].x = 70 * j;
 				enemyClips[i][j].y = 0;
 				enemyClips[i][j].w = 70;
 				enemyClips[i][j].h = 70;
@@ -250,7 +250,7 @@ void LoadEnemyMedia() {
 		}
 		else {
 			for (int j = 0; j < 40; j++) {
-				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].x = 70 * j;
 				enemyClips[i][j].y = 0;
 				enemyClips[i][j].w = 70;
 				enemyClips[i][j].h = 70;
@@ -304,15 +304,15 @@ bool ENEMY::FindPath(bool move) {  //return false if there isn't any path
 				dir = RIGHT;
 			}
 			if (path.shortest_path[1] - pos == DIR[UP]) {
-				rect.x -= speed;
+				rect.y -= speed;
 				dir = UP;
 			}
 			if (path.shortest_path[1] - pos == DIR[LEFT]) {
-				rect.y -= speed;
+				rect.x -= speed;
 				dir = LEFT;
 			}
 			if (path.shortest_path[1] - pos == DIR[DOWN]) {
-				rect.x += speed;
+				rect.y += speed;
 				dir = DOWN;
 			}
 			if (abs(rect.x - 80 - pos.X * 90) >= 90 || abs(rect.y - 70 - pos.Y * 90) >= 90) {
@@ -479,9 +479,11 @@ int main(int argc, char* args[])
 							{
 								if (mouse_position.x < (userrect.x + 200)) //asking to upgrade
 								{
-									upgrade(tempx, tempy, towers[tempx][tempy]);
-									//printf("%d", towers[tempx][tempy]->kind);
-									status = play;
+									if (towers[tempx][tempy]->kind != 2 && towers[tempx][tempy]->kind != 5 && towers[tempx][tempy]->kind != 8) {
+										upgrade(tempx, tempy, towers[tempx][tempy]);
+										//printf("%d", towers[tempx][tempy]->kind);
+										status = play;
+									}
 								}
 								else //sell
 								{
@@ -587,7 +589,7 @@ int main(int argc, char* args[])
 				for (auto enemy : enemies) {
 					enemy->FindPath(1);
 //					cout << enemy->rect.x << ' ' << enemy->rect.y << ' ' << enemy->FindPath(0) << '\n';
-					SDL_RenderCopy(gRenderer, enemy->pic, &enemyClips[enemy->TYPE][enemy->period * enemy->dir + (enemy->current_phase % enemy->period)], &enemy->rect);
+					SDL_RenderCopy(gRenderer, enemy->pic, &enemyClips[enemy->TYPE][enemy->period * enemy->dir + ((enemy->current_phase ++) % enemy->period)], &enemy->rect);
 				}
 
 				//render buttom
