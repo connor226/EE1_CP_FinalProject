@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "SDL_image.h"
+#include"SDL_ttf.h"
 #include <stdio.h>
 #include <string>
 #include"tower.h"
@@ -16,7 +17,8 @@ const int TOWER_WIDTH = 90;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-
+TTF_Font* gFont = NULL;
+SDL_Texture* words;
 //map's things
 enum gamestatus { play, upgrading };
 SDL_Texture* background;
@@ -151,10 +153,18 @@ bool loadmedia()
 	rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/test_user.png"); // new include
 	user = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+	gFont = TTF_OpenFont("lazy.ttf", 28);
+	//SDL_Color textColor = { 0, 0, 0 };
+	//SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, "hi", textColor);
+	//words = SDL_CreateTextureFromSurface(gRenderer, textSurface);
 	SDL_FreeSurface(loadedSurface);
+	//SDL_FreeSurface(textSurface);
 	return true;
 }
-
+void renderwords(SDL_Texture* mTexture,string textureText, SDL_Color textColor) {
+	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+	mTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+}
 void close()
 {
 	//Free loaded images
