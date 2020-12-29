@@ -20,7 +20,6 @@ const int TOWER_WIDTH = 90;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-TTF_Font* gFont = NULL;
 SDL_Texture* words;
 //map's things
 enum gamestatus { play, upgrading };
@@ -37,7 +36,31 @@ SDL_Rect lightrect = { 1720,910,80,80 };
 SDL_Rect slowrect = { 1720,820,80,80 };
 SDL_Rect rocketrect = { 1720,730,80,80 };
 SDL_Point mouse_position;
-
+TTF_Font* gFont = NULL;
+class word {
+	public:
+		word(string s, int size, SDL_Color color_) {
+			n = size;
+			color = color_;
+			gFont = TTF_OpenFont("lazy.ttf", size);
+			SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, s.c_str(), color_);
+			mTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+			SDL_FreeSurface(textSurface);
+		}
+		SDL_Texture* mTexture;
+		void changewords(string s) {
+			gFont = TTF_OpenFont("lazy.ttf", n);
+			SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, s.c_str(), color);
+			mTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+			SDL_FreeSurface(textSurface);
+		}
+		int n;
+		SDL_Color color;
+		SDL_Rect quad = { 0,0,0,0 };
+		void render() {
+			SDL_RenderCopy(gRenderer, mTexture, NULL, &quad);
+		}
+};
 bool point_in_rect(SDL_Point p, const SDL_Rect r)
 {
 	if ((p.x > r.x) && (p.x < r.x + r.w) && (p.y > r.y) && (p.y < r.y + r.h)){
@@ -145,11 +168,11 @@ bool loadmedia()
 	tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/Advanced_Slow_Tower3.png");
 	tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Light_Gun.png");
+	loadedSurface = IMG_Load("pictures/Bullet_Small.png");
 	bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Medium_Gun.png");
+	loadedSurface = IMG_Load("pictures/Bullet_Large.png");
 	bullet_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
+	loadedSurface = IMG_Load("pictures/Uranium_Bullet.png");
 	bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
 	background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
@@ -161,18 +184,10 @@ bool loadmedia()
 	rocket = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/test_user.png"); // new include
 	user = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	gFont = TTF_OpenFont("lazy.ttf", 28);
-	//SDL_Color textColor = { 0, 0, 0 };
-	//SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, "hi", textColor);
-	//words = SDL_CreateTextureFromSurface(gRenderer, textSurface);
 	SDL_FreeSurface(loadedSurface);
-	//SDL_FreeSurface(textSurface);
 	return true;
 }
-void renderwords(SDL_Texture* mTexture,string textureText, SDL_Color textColor) {
-	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
-	mTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
-}
+
 void close()
 {
 	//Free loaded images

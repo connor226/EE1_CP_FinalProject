@@ -78,8 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+<<<<<<< HEAD
     <IncludePath>SDL2_ttf-2.0.15\include;SDL2_image-2.0.5\include;SDL2-2.0.12\include;C:\vclib\SDL2-2.0.12\include;C:\vclib\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>SDL2_ttf-2.0.15\lib\x64;SDL2_image-2.0.5\lib\x64;SDL2-2.0.12\lib\x64;C:\vclib\SDL2-2.0.12\lib\x64;C:\vclib\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+=======
+    <IncludePath>SDL2_image-2.0.5\include;SDL2-2.0.12\include;SDL2_ttf-2.0.15\include;C:\vclib\SDL2-2.0.12\include;C:\vclib\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>SDL2_image-2.0.5\lib\x64;SDL2-2.0.12\lib\x64;C:\vclib\SDL2-2.0.12\lib\x64;SDL2_ttf-2.0.15\lib\x64;C:\vclib\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+>>>>>>> 25fe1b5601c7e5fed7732f39bcf5be185e824670
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -148,6 +153,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="tower.h" />
+    <ClInclude Include="word.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="pictures\Basic_Slow_Tower.png" />

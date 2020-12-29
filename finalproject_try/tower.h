@@ -19,45 +19,45 @@ class tower{
             switch (kind){
             case 0:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 1:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 2:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 3:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 4:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 5:
                 atk = 5;
-                cooltime = 1;
-                range = 10;
+                cooltime = 200;
+                range = 1000;
                 break;
             case 6:
                 atk = 5;
-                range = 10;
+                range = 1000;
                 break;
             case 7:
                 atk = 5;
-                range = 10;
+                range = 1000;
                 break;
             case 8:
                 atk = 5;
-                range = 10;
+                range = 1000;
                 break;
             default:
                 break;
@@ -74,7 +74,7 @@ class tower{
         }
         bool inrange(ENEMY* monster)//check if enemy is in tower range
         {
-            if (pow((monster->pos.first - x), 2) + pow((monster->pos.second - y), 2) > pow(range, 2))
+            if (pow((monster->pos.first - x), 2) + pow((monster->pos.second - y), 2) < pow(range, 2))
             {
                 lock = true;
                 locked_enemy = monster;
