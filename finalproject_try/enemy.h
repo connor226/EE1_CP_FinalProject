@@ -34,7 +34,7 @@ pii operator -(const pii &p1, const pii &p2){
 }
 
 bool check(pii p){
-	return (p.X >= 0 && p.X < 18 && p.Y >= 0 && p.Y < 18);
+	return (p.X >= 0 && p.X < 18 && p.Y >= 0 && p.Y < 10);
 }
 
 class val{

@@ -8,6 +8,7 @@
 #include<vector>
 #include"enemy.h"
 #include"bullet.h"
+#include <iostream>
 
 using namespace std;
 
@@ -272,8 +273,8 @@ bool ENEMY::FindPath(bool move) {  //return false if there isn't any path
 			break;
 		}
 		for (int i = 0; i < 4; i++) {
-			if (check(pos + DIR[i]) && !visited[pos.X + DIR[i].X][pos.Y + DIR[i].Y] && towers[pos.X][pos.Y] == NULL) {
-				visited[pos.X + DIR[i].X][pos.Y + DIR[i].Y] = true;
+			if (check(path.pos + DIR[i]) && !visited[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y] && !towers[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y]) {
+				visited[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y] = true;
 				val tmp = path;
 				tmp.pos = path.pos + DIR[i];
 				tmp.shortest_path.push_back(tmp.pos);
@@ -359,6 +360,7 @@ int main(int argc, char* args[])
 	}
 	else {
 		//Load media
+		LoadEnemyMedia();
 		if (!loadmedia()) {
 			printf("Failed to load media!\n");
 		}
@@ -389,11 +391,12 @@ int main(int argc, char* args[])
 				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
 				//If there is no enemy in vector, generate five everytime cntdown is divisible by 10
 				if (enemies.empty() && !cntdown) {
-					cntdown = 51;
+					cntdown = 41;
 				}
 
 				if (cntdown) {
 					if ((-- cntdown) % 10 == 0)  enemies.push_back(Generate_Enemy());
+				//	cout << cntdown << ' ' << enemies.size() << '\n';
 				}
 
 				//Handle events on queue
@@ -573,6 +576,7 @@ int main(int argc, char* args[])
 
 				for (auto enemy : enemies) {
 					enemy->FindPath(1);
+//					cout << enemy->rect.x << ' ' << enemy->rect.y << ' ' << enemy->FindPath(0) << '\n';
 					SDL_RenderCopy(gRenderer, enemy->pic, &enemyClips[enemy->TYPE][enemy->period * enemy->dir + (enemy->current_phase % enemy->period)], &enemy->rect);
 				}
 
