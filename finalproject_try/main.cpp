@@ -168,11 +168,11 @@ bool loadmedia()
 	tower_pic[7] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/Advanced_Slow_Tower3.png");
 	tower_pic[8] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Light_Gun.png");
+	loadedSurface = IMG_Load("pictures/Bullet_Small.png");
 	bullet_pic[0] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Medium_Gun.png");
+	loadedSurface = IMG_Load("pictures/Bullet_Large.png");
 	bullet_pic[1] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-	loadedSurface = IMG_Load("pictures/Heavy_Gun.png");
+	loadedSurface = IMG_Load("pictures/Uranium_Bullet.png");
 	bullet_pic[2] = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 	loadedSurface = IMG_Load("pictures/Basic_Level_Classic.jpg");
 	background = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
