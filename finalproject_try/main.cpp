@@ -3,10 +3,13 @@
 #include"SDL_ttf.h"
 #include <stdio.h>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 #include"tower.h"
 #include<vector>
 #include"enemy.h"
 #include"bullet.h"
+#include <iostream>
 
 using namespace std;
 
@@ -83,6 +86,11 @@ vector<bullet*> bullets;
 
 //enemy's things
 vector<ENEMY*> enemies;
+ENEMY* DEFAULT = new ENEMY(0);
+SDL_Texture *EnemyTexture[10];  //stands for (L)Light (H)Heavy (S)Soldier (T)Tank
+SDL_Rect enemyClips[10][50];
+int TotalMoney = 0, cntdown = 0;
+//bool **MAP = new bool *[18];
 //enemy
 
 //init
@@ -188,6 +196,10 @@ void close()
 		SDL_DestroyTexture(tower_pic[i]);
 		tower_pic[i] = NULL;
 	}
+	for (int i = 1; i <= 4; i++) {
+		SDL_DestroyTexture(EnemyTexture[i]);
+		EnemyTexture[i] = NULL;
+	}
 	SDL_DestroyTexture(light);
 	light = NULL;
 	SDL_DestroyTexture(slow);
@@ -214,7 +226,125 @@ void upgrade(int x, int y, tower* old)
 	towers[x][y] = NULL;
 	towers[x][y] = new tower(x, y, c);
 }
+//ENEMY
+void LoadEnemyMedia() {
+	SDL_Surface* surface;
+	surface = IMG_Load("pictures/Light_Soldier.png");
+	EnemyTexture[1] = SDL_CreateTextureFromSurface(gRenderer, surface);
+	surface = IMG_Load("pictures/Heavy_Soldier.png");
+	EnemyTexture[2] = SDL_CreateTextureFromSurface(gRenderer, surface);
+	surface = IMG_Load("pictures/Light_Tank.png");
+	EnemyTexture[3] = SDL_CreateTextureFromSurface(gRenderer, surface);
+	surface = IMG_Load("pictures/Heavy_Tank.png");
+	EnemyTexture[4] = SDL_CreateTextureFromSurface(gRenderer, surface);
+	SDL_FreeSurface(surface);
+	for (int i = 1; i <= 4; i++) {
+		if (i == 1) {
+			for (int j = 0; j < 48; j++) {
+				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].y = 0;
+				enemyClips[i][j].w = 70;
+				enemyClips[i][j].h = 70;
+			}
+		}
+		else  if (i == 2) {
+			for (int j = 0; j < 40; j++) {
+				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].y = 0;
+				enemyClips[i][j].w = 70;
+				enemyClips[i][j].h = 140;
+			}
+		}
+		else  if (i == 3) {
+			for (int j = 0; j < 12; j++) {
+				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].y = 0;
+				enemyClips[i][j].w = 70;
+				enemyClips[i][j].h = 70;
+			}
+		}
+		else {
+			for (int j = 0; j < 40; j++) {
+				enemyClips[i][j].x = 70 * i;
+				enemyClips[i][j].y = 0;
+				enemyClips[i][j].w = 70;
+				enemyClips[i][j].h = 70;
+			}
+		}
+	}
+}
 
+ENEMY* Generate_Enemy() {
+	srand(time(NULL));
+	int type = rand() % 4 + 1;
+	ENEMY* ret = new ENEMY(type);
+	ret->pic = EnemyTexture[type];
+	return ret;
+}
+
+bool ENEMY::FindPath(bool move) {  //return false if there isn't any path
+	queue<val> q;
+	bool visited[18][10] = {}, exist_path = false;
+	val start, path;
+	start.pos = pos;
+	start.shortest_path.push_back(pos);
+	q.push(start);
+	visited[pos.X][pos.Y] = true;
+	while (!q.empty()) {
+		path = q.front();
+		q.pop();
+		if (path.pos == make_pair(17, 5)) {
+			exist_path = true;
+			break;
+		}
+		for (int i = 0; i < 4; i++) {
+			if (check(path.pos + DIR[i]) && !visited[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y] && !towers[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y]) {
+				visited[path.pos.X + DIR[i].X][path.pos.Y + DIR[i].Y] = true;
+				val tmp = path;
+				tmp.pos = path.pos + DIR[i];
+				tmp.shortest_path.push_back(tmp.pos);
+				q.push(tmp);
+			}
+		}
+	}
+	if (!exist_path)  return false;
+	else if (move) {
+		if (freeze) {
+			--freeze;
+		}
+		else  if (rect.x < 80)  rect.x += speed;
+		else  if (path.shortest_path.size() > 1) {
+			if (path.shortest_path[1] - pos == DIR[RIGHT]) {
+				rect.x += speed;
+				dir = RIGHT;
+			}
+			if (path.shortest_path[1] - pos == DIR[UP]) {
+				rect.x -= speed;
+				dir = UP;
+			}
+			if (path.shortest_path[1] - pos == DIR[LEFT]) {
+				rect.y -= speed;
+				dir = LEFT;
+			}
+			if (path.shortest_path[1] - pos == DIR[DOWN]) {
+				rect.x += speed;
+				dir = DOWN;
+			}
+			if (abs(rect.x - 80 - pos.X * 90) >= 90 || abs(rect.y - 70 - pos.Y * 90) >= 90) {
+				pos = path.shortest_path[1];
+			}
+		}
+		else {
+			if (rect.x < 1800)  rect.x += speed;
+			else {
+				health -= 1;
+				money = 0;
+				hp = 0;
+			}
+		}
+	}
+	return true;
+}
 
 int main(int argc, char* args[])
 {
@@ -255,6 +385,7 @@ int main(int argc, char* args[])
 	}
 	else {
 		//Load media
+		LoadEnemyMedia();
 		if (!loadmedia()) {
 			printf("Failed to load media!\n");
 		}
@@ -283,6 +414,15 @@ int main(int argc, char* args[])
 				SDL_RenderCopy(gRenderer, light, NULL, &initiallight);
 				SDL_RenderCopy(gRenderer, slow, NULL, &initialslow);
 				SDL_RenderCopy(gRenderer, rocket, NULL, &initialrocket);
+				//If there is no enemy in vector, generate five everytime cntdown is divisible by 10
+				if (enemies.empty() && !cntdown) {
+					cntdown = 41;
+				}
+
+				if (cntdown) {
+					if ((-- cntdown) % 10 == 0)  enemies.push_back(Generate_Enemy());
+				//	cout << cntdown << ' ' << enemies.size() << '\n';
+				}
 
 				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0) {
@@ -302,21 +442,21 @@ int main(int argc, char* args[])
 							{
 								if (p < 18 && p >= 0 && q < 10 && q >= 0) {//check
 									if (lightflag == true) {
-										if (towers[p][q] == NULL)
+										if (towers[p][q] == NULL && DEFAULT->FindPath(0))
 										{
 											towers[p][q] = new tower(p, q, 0);
 										}
 										lightflag = false;
 									}
 									if (slowflag == true) {
-										if (towers[p][q] == NULL)
+										if (towers[p][q] == NULL && DEFAULT->FindPath(0))
 										{
 											towers[p][q] = new tower(p, q, 6);
 										}
 										slowflag = false;
 									}
 									if (rocketflag == true) {
-										if (towers[p][q] == NULL)
+										if (towers[p][q] == NULL && DEFAULT->FindPath(0))
 										{
 											towers[p][q] = new tower(p, q, 3);
 										}
@@ -368,10 +508,12 @@ int main(int argc, char* args[])
 						}
 					}
 				}
-				//unfreeze
+				/*unfreeze
 				for (int i = 0; i < enemies.size(); i++) {
 					enemies[i]->freeze = false;
 				}
+				//this is handled in enemy.h
+				*/
 				//tower motion
 				for (int i = 0; i < 18; i++) {
 					for (int j = 0; j < 10; j++) {
@@ -448,7 +590,20 @@ int main(int argc, char* args[])
 					SDL_RenderCopy(gRenderer, bullet_pic[bullets[i]->kind], NULL, &bullets[i]->quad);
 				}
 				//enemies motion
+				vector<ENEMY*> eliminate_dead_enemy = enemies;
+				enemies.clear();
+				for (auto enemy : eliminate_dead_enemy) {
+					if (enemy->hp > 0) {
+						enemies.push_back(enemy);
+					}
+					else  TotalMoney += enemy->money;  //earn money when an enemy is killed
+				}
 
+				for (auto enemy : enemies) {
+					enemy->FindPath(1);
+//					cout << enemy->rect.x << ' ' << enemy->rect.y << ' ' << enemy->FindPath(0) << '\n';
+					SDL_RenderCopy(gRenderer, enemy->pic, &enemyClips[enemy->TYPE][enemy->period * enemy->dir + (enemy->current_phase % enemy->period)], &enemy->rect);
+				}
 
 				//render buttom
 				if (lightflag == true)
