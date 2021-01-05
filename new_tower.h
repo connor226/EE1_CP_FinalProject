@@ -1,5 +1,5 @@
-#ifndef TOWER_H
-#define TOWER_H
+#ifndef NEW_TOWER_H
+#define NEW_TOWER_H
 
 #define PI 3.14159265
 #include<SDL.h>
@@ -9,7 +9,6 @@ class tower {
 public:
     friend class ENEMY;
     tower(int num_x, int num_y, int type, int time);
-    int a_g; // 0 for ground, 1 for air, 2 for both;
     bool ableatk(int t_c);
     bool inrange(ENEMY* monster);
     void rotate(ENEMY* locked_enemy);
@@ -25,12 +24,12 @@ public:
     int sellprice;
     double calculated_theta;
     int cooltime;
-    //vector<int> can_upgrade;
+    vector<int> can_upgrade;
 };
 void loadtowermedia();
 void tower_init();
 void tower_motion();
-void upgrade(int x, int y, int kind, int t);
+void upgrade(int x, int y, tower* old, int t);
 #endif
 /*new variable
 SDL_Texture* tower_pic[15];

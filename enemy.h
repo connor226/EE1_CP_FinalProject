@@ -1,43 +1,32 @@
-#ifndef INC_BITS_H
-#define INC_BITS_H
-#include <bits/stdc++.h>
-#endif
+#ifndef ENEMY_H
+#define ENEMY_H
 
-#ifndef INC_SDL_H
-#define INC_SDL_H
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#endif
-
+#include <queue>
+#include <utility>
+#include<SDL.h>
+#include<vector>
 
 using namespace std;
 typedef pair<int,int> pii;
 
 const int RIGHT = 0;
-const int LEFT = 1;
-const int UP = 2;
+const int UP = 1;
+const int LEFT = 2;
 const int DOWN = 3;
-const char *Light_Soldier_path = "./pictures/Light_soldier.png";
-const char *Heavy_Soldier_path = "./pictures/Heavy_Soldier.png";
-const char *Light_Tank_path = "./pictures/Light_Tank.png";
-const char *Heavy_Tank_path = "./pictures/Heavy_Tank.png";
 
 #define X first
 #define Y second
 
-pii DIR[4] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+//extern int health;
+const int MAX_HEALTH[10] = {1000000, 30, 120, 700, 2000, 6000, 800, 500, 180, 5200};
+const pii DIR[4] = {{1,0}, {0, -1}, {-1, 0}, {0, 1}};
 
-pii operator +(const pii &p1, const pii &p2){
-	return {p1.X + p2.X, p1.Y + p2.Y};
-}
+pii operator +(const pii& p1, const pii& p2);
 
-pii operator -(const pii &p1, const pii &p2){
-	return {p1.X - p2.X, p1.Y - p2.Y};
-}
+pii operator -(const pii& p1, const pii& p2);
 
-bool check(pii p){
-	return (p.X >= 0 && p.X < 18 && p.Y >= 0 && p.Y < 18);
-}
+bool check(pii p);
+void enemy_motion();
 
 class val{
 	public:
@@ -45,105 +34,20 @@ class val{
 		vector<pair<int, int> > shortest_path;
 };
 
-class ENEMY{
-	public:
-		int freeze; //use for slow tower
-		bool CanFly;
-		int hp, speed, dir, money;
-		pii pos;
-//		SDL_Texture *pic;
-//		SDL_Rect rect;
-		ENEMY(int type){
-			switch(type){
-				case 1:{  //Light_Soldier
-					hp = 75;
-					speed = 3;
-					money = 2;
-					break;
-				}
-				case 2:{  //Heavy_Soldier
-					hp = 100;
-					speed = 2;
-					money = 1;
-					break;
-				}
-				case 3:{  //Light_Tank
-					hp = 250;
-					speed = 1;
-					money = 5;
-					break;
-				}
-				case 4:{  //Heavy_Tank
-					hp = 500;
-					speed = 1;
-					money = 10;
-					break;
-				}
-			}
-			rect.w = TOWER_WIDTH;
-			rect.h = TOWER_WIDTH;
-			CanFly = false;
-			dir = RIGHT;
-		}
-		bool FindPath(){  //return false if there isn't any path
-			queue<val> q;
-			bool visited[18][10] = {}, exist_path = false;
-			val start, path;
-			start.pos = pos;
-			start.shortest_path.push_back(pos);
-			q.push(start);
-			visited[pos.X][pos.Y] = true;
-			while(!q.empty()){
-				path = q.front();
-				q.pop();
-				if(path.pos == make_pair(17, 5)){
-					exist_path = true;
-					break;
-				}
-				for(int i = 0; i < 4; i++){
-					if(check(pos + DIR[i]) && !visited[pos.X + DIR[i].X][pos.Y + DIR[i].Y]){
-						visited[pos.X + DIR[i].X][pos.Y + DIR[i].Y] = true;
-						val tmp = path;
-						tmp.pos = path.pos + DIR[i];
-						tmp.shortest_path.push_back(tmp.pos);
-						q.push(tmp);
-					}
-				}
-			}
-			if(!exist_path)  return false;
-			else{
-				if(path.shortest_path.size() > 1){
-					if(path.shortest_path[1].pos - pos == DIR[RIGHT]){
-						rect.x += speed;
-						dir = RIGHT;
-					}
-					if(path.shortest_path[1].pos - pos == DIR[LEFT]){
-						rect.x -= speed;
-						dir = LEFT;
-					}
-					if(path.shortest_path[1].pos - pos == DIR[UP]){
-						rect.y -= speed;
-						dir = UP;
-					}
-					if(path.shortest_path[1].pos - pos == DIR[DOWN]){
-						rect.x += speed;
-						dir = DOWN;
-					}
-					if(abs(rect.x - 80 - pos.X * TOWER_WIDTH) >= TOWER_WIDTH || abs(rect.y - 70 - pos.Y * TOWER_WIDTH) >= TOWER_WIDTH){
-						pos = path.shortest_path[1].pos;
-					}
-				}
-				else{
-					/*
-						*****TODO*****
-						an enemy reaches the exit here!!!
-						maybe we should call a function here to remove this enemy,
-						and then minus one point from the base's hp
-					*/
-				}
-				return true;
-			}
-		}
+class ENEMY {
+public:
+	bool CanFly, wtflag;
+	int TYPE, hp, pos, dir, money, period;
+	double speed, freeze, nowx, nowy, current_phase;
+	vector<pii> PATH;
+	SDL_Texture *pic;
+	SDL_Rect rect, green, red;
+	ENEMY(int type);
+	bool FindPath(bool isair);
+	void GoPath();
+	void calculate_hp();
 };
-
-vector<ENEMY*> enemy;
+void LoadEnemyMedia();
+ENEMY* Generate_Enemy();
+ENEMY* Generate_Enemy(pii pos);
+#endif
