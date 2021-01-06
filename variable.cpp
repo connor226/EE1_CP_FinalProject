@@ -10,7 +10,7 @@ const int SCREEN_HEIGHT = 1000;
 const int TOWER_WIDTH = 90;
 
 //variable
-int TotalMoney = 30;
+int TotalMoney = 500;
 int TotalLife = 24;
 int speedy=1;
 int currentscore = 0;
@@ -24,7 +24,7 @@ SDL_Texture* user;
 const SDL_Rect initiallight = { 1720,910,90,90 };
 const SDL_Rect initialslow = { 1720,820,90,90 };
 const SDL_Rect initialrocket = { 1720,730,90,90 };
-const SDL_Rect cancel_rect = { 1720,640,90,90 };
+const SDL_Rect cancel_rect = { 1720,640,80,80 };
 SDL_Rect userrect = { 100,100,400,300 };
 SDL_Rect lightrect = { 1720,910,80,80 };
 SDL_Rect slowrect = { 1720,820,80,80 };
@@ -36,6 +36,7 @@ SDL_Point mouse_position;
 SDL_Texture* upgradeorsell[26];
 SDL_Texture* putlist[3];
 SDL_Rect upgradelist[3];
+SDL_Texture* white = NULL;
 //upgrade
 
 //menu's thing
@@ -136,4 +137,3 @@ string life = "Life: " + to_string(TotalLife);
 string wave = "Wave: " + to_string(currentwave);
 string money = "$: " + to_string(TotalMoney);
 string score = "Score: " + to_string(currentscore);
-SDL_Texture* white = NULL;
